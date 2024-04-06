@@ -19,23 +19,16 @@ export default function App() {
 
   if (loading) return null;
 
+  var initalRoute = "LoginScreen";
   if (auth && auth.currentUser && auth.currentUser.emailVerified) {
-    return (
-      <NavigationContainer>
-        <Stack.Navigator initialRouteName={"HomeScreen"}>
-          <Stack.Screen name="LoginScreen" component={LoginScreen} />
-          <Stack.Screen name="HomeScreen" component={HomeScreen} />
-        </Stack.Navigator>
-      </NavigationContainer>
-    );
-  } else {
-    return (
-      <NavigationContainer>
-        <Stack.Navigator initialRouteName={"LoginScreen"}>
-          <Stack.Screen name="LoginScreen" component={LoginScreen} />
-          <Stack.Screen name="HomeScreen" component={HomeScreen} />
-        </Stack.Navigator>
-      </NavigationContainer>
-    );
+    initalRoute = "HomeScreen";
   }
+  return (
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName={initalRoute}>
+        <Stack.Screen name="LoginScreen" component={LoginScreen} />
+        <Stack.Screen name="HomeScreen" component={HomeScreen} />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
 }

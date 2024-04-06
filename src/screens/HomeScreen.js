@@ -16,9 +16,10 @@ import { auth, firestoreDB } from "../config/firebase-config";
 import { myColors } from "../constants/Colors";
 import SwipeComponent from "../components/SwipeComponent";
 import mockupProducts from "../mockup/products.json";
+import { getUserProductsPreviewDate } from "../services/productService";
 
 export default function HomeScreen({ route, navigation }) {
-  const [products, setProducts] = useState(mockupProducts);
+  const [products, setProducts] = useState([]);
 
   const { t } = useTranslation();
 
@@ -52,6 +53,16 @@ export default function HomeScreen({ route, navigation }) {
       backAction
     );
     return () => backHandler.remove();
+  }, []);
+
+  // getProducts effect
+  useEffect(() => {
+    const getProducts = () => {
+      getUserProductsPreviewDate("KUE7By6t8KnByqScIkYY").then((prod) => {
+        setProducts(prod);
+      });
+    };
+    getProducts();
   }, []);
 
   // Manage logout

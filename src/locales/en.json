@@ -35,6 +35,8 @@
       "success":"Success",
       "yes":"Yes",
       "update":"Update",
-      "cancel":"Cancel"
+      "cancel":"Cancel",
+      "shortDays":"d",
+      "shortWeeks":"w"
    }
 }

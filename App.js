@@ -19,6 +19,7 @@ export default function App() {
 
   if (loading) return null;
 
+  // Modifies the initial route
   var initalRoute = "LoginScreen";
   if (auth && auth.currentUser && auth.currentUser.emailVerified) {
     initalRoute = "HomeScreen";

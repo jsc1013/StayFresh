@@ -85,6 +85,7 @@ export default function HomeScreen({ route, navigation }) {
     <View style={styles.container}>
       <StatusBar></StatusBar>
 
+      {/* HEADER */}
       <View style={styles.header}>
         <View style={styles.headerHomeManagementContainer}>
           <TouchableOpacity>
@@ -105,6 +106,61 @@ export default function HomeScreen({ route, navigation }) {
         </View>
       </View>
       <Divider />
+
+      {/* BUTTONS */}
+      <View style={styles.buttonsContainer}>
+        {/* ADD PRODUCT */}
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity>
+            <Image
+              source={require("../assets/addProduct.png")}
+              style={styles.buttonImage}
+            />
+          </TouchableOpacity>
+          <Text style={styles.buttonText}>{t("components.home.addText")}</Text>
+        </View>
+        {/* CONSUME PRODUCT */}
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity>
+            <Image
+              source={require("../assets/removeProduct.png")}
+              style={styles.buttonImage}
+            />
+          </TouchableOpacity>
+          <Text style={styles.buttonText}>
+            {t("components.home.consumeText")}
+          </Text>
+        </View>
+        {/* STORAGE */}
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity>
+            <Image
+              source={require("../assets/storage.png")}
+              style={styles.buttonImage}
+            />
+          </TouchableOpacity>
+          <Text style={styles.buttonText}>
+            {t("components.home.storageText")}
+          </Text>
+        </View>
+      </View>
+
+      {/* NEXT TO EXPIRE */}
+      <View style={styles.nextToExpireContainer}>
+        <View style={styles.nextToExpireTextContainer}>
+          <TouchableOpacity>
+            <Text style={styles.nextToExpireText}>Proximos 15 días</Text>
+          </TouchableOpacity>
+        </View>
+        <TouchableOpacity>
+          <Image
+            source={require("../assets/update.png")}
+            style={styles.nextToExpireUpdateImage}
+          />
+        </TouchableOpacity>
+      </View>
+
+      <Toast></Toast>
     </View>
   );
 }
@@ -140,5 +196,41 @@ const styles = StyleSheet.create({
     marginTop: 10,
     width: 32,
     height: 32,
+  },
+  buttonsContainer: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    alignItems: "center",
+    marginTop: "5%",
+  },
+  buttonContainer: {
+    flex: 1,
+    alignItems: "center",
+  },
+  buttonImage: {
+    width: 80,
+    height: 80,
+    borderRadius: 20,
+  },
+  buttonText: {
+    fontWeight: "bold",
+  },
+  nextToExpireContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginTop: "2%",
+    marginLeft: "4%",
+  },
+  nextToExpireText: {
+    fontSize: 25,
+    fontWeight: "bold",
+    marginLeft: "4%",
+    marginTop: "10%",
+  },
+  nextToExpireUpdateImage: {
+    width: 50,
+    height: 50,
+    marginTop: 15,
+    marginRight: 25,
   },
 });

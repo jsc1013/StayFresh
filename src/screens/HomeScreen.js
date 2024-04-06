@@ -11,6 +11,7 @@ import {
 import { StatusBar } from "expo-status-bar";
 import { useTranslation } from "react-i18next";
 import { Divider } from "react-native-paper";
+import Toast from "react-native-toast-message";
 import { auth, firestoreDB } from "../config/firebase-config";
 import { myColors } from "../constants/Colors";
 

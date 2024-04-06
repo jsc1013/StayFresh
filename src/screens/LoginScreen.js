@@ -22,10 +22,18 @@ export default function LoginScreen({}) {
   }, []);
 
   function handleCreateAccount() {
-    console.log(email);
-    console.log(password);
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        sendEmailVerification(auth.currentUser).then(() => {
+          console.log("email sent");
+        });
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
   }
 
+  // Handles the sign in logic
   function handleSignIn() {
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {

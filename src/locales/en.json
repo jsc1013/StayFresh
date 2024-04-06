@@ -14,12 +14,27 @@
          "auth/weak-password":"Password should be at least 6 characters",
          "auth/missing-password":"Missing password"
       },
-      "general":{
-         "error":"Error",
-         "success":"Success",
-         "yes":"Yes",
-         "update":"Update",
-         "cancel":"Cancel"
+      "home":{
+         "exitAppHeader":"Wait!",
+         "exitAppMessage":"Are you sure you want to exit the app?",
+         "logoutAppHeader":"Wait!",
+         "logoutAppMessage":"Are you sure you want to logout?",
+         "addText": "Add",
+         "consumeText": "Consume",
+         "storageText": "Storage",
+         "nextExpiraciesText": "Next {{days}} days",
+         "positiveValue": "Error. Value must be positive number",
+         "deleteProductHeader": "Delete product",
+         "deleteProductMessage": "Do you want to delete the product?",
+         "missingDefaultHome": "First set or create a default home",
+         "defaultPreviewDays": "Select amount of days"
       }
+   },
+   "general":{
+      "error":"Error",
+      "success":"Success",
+      "yes":"Yes",
+      "update":"Update",
+      "cancel":"Cancel"
    }
 }

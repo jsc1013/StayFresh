@@ -15,6 +15,21 @@
          "auth/missing-password":"Introduzca contraseña"
       }
    },
+   "home":{
+     "exitAppHeader": "¡Espere!",
+     "exitAppMessage": "¿Quiere salir de la aplicación?",
+     "logoutAppHeader":"¡Espere!",
+     "logoutAppMessage":"¿Quiere cerrar la sesión?",
+     "addText": "Añadir",
+     "consumeText": "Consumir",
+     "storageText": "Almacenamiento",
+     "nextExpiraciesText": "Próximos {{days}} días",
+     "positiveValue": "Error. El valor debe ser un número positivo",
+     "deleteProductHeader": "Eliminar producto",
+     "deleteProductMessage": "¿Seguro que quiere eliminar el producto?",
+     "missingDefaultHome": "Primero debe crear o establecer un hogar",
+     "defaultPreviewDays": "Seleccione número de días"
+   },
    "general":{
       "error":"Error",
       "success":"Éxito",

@@ -17,10 +17,23 @@ export default function LoginScreen({}) {
 
   const navigation = useNavigation();
 
+  // Sets the navigation options
   useEffect(function navigationOptions() {
     navigation.setOptions({ headerShown: false });
   }, []);
 
+  // Adds the listener to redirect if already loggedin
+  useEffect(function checkAuthState() {
+    auth.onAuthStateChanged((user) => {
+      if (user && user.emailVerified) {
+        console.log("User logged in, will redirect");
+      } else {
+        console.log("User not logged in");
+      }
+    });
+  }, []);
+
+  // Handles the create account logic
   function handleCreateAccount() {
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {

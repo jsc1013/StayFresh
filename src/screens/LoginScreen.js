@@ -6,6 +6,10 @@ import { TextInput, Button } from "react-native-paper";
 export default function LoginScreen({}) {
   const navigation = useNavigation();
 
+  useEffect(function navigationOptions() {
+    navigation.setOptions({ headerShown: false });
+  }, []);
+
   return (
     <View style={styles.container}>
       <View style={styles.imageContainer}>

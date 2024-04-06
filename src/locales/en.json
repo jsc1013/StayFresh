@@ -1,0 +1,14 @@
+{
+   "components":{
+      "login":{
+         "requestEmail":"Introduce your email"
+      },
+      "general":{
+         "error":"Error",
+         "success":"Success",
+         "yes":"Yes",
+         "update":"Update",
+         "cancel":"Cancel"
+      }
+   }
+}

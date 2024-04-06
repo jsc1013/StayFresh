@@ -1,0 +1,14 @@
+{
+   "components":{
+      "login":{
+         "requestEmail":"Introduzca su email"
+      }
+   },
+   "general":{
+      "error":"Error",
+      "success":"Éxito",
+      "yes":"Sí",
+      "update":"Actualizar",
+      "cancel":"Cancelar"
+   }
+}

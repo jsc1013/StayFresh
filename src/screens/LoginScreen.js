@@ -7,6 +7,7 @@ import { myColors } from "../constants/Colors";
 export default function LoginScreen({}) {
   const [email, setemail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   const navigation = useNavigation();
 
@@ -53,6 +54,13 @@ export default function LoginScreen({}) {
             setPassword(text);
           }}
           value={password}
+          secureTextEntry={!showPassword}
+          right={
+            <TextInput.Icon
+              icon={showPassword ? "eye-outline" : "eye-off"}
+              onPress={() => setShowPassword(!showPassword)}
+            />
+          }
           theme={{ colors: { primary: myColors.mainGreen } }}
         />
       </View>

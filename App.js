@@ -10,6 +10,7 @@ const Stack = createNativeStackNavigator();
 export default function App() {
   const [loading, setLoading] = useState(true);
 
+  // Adds the authStateChange listener
   useEffect(() => {
     auth.onAuthStateChanged(() => {
       setLoading(false);

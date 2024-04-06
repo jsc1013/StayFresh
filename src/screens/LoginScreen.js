@@ -27,8 +27,18 @@ export default function LoginScreen({}) {
   }
 
   function handleSignIn() {
-    console.log(email);
-    console.log(password);
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        const user = userCredential.user;
+        if (user.emailVerified) {
+          console.log("Verified");
+        } else {
+          console.log("Not verified");
+        }
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
   }
 
   return (

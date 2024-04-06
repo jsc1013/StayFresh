@@ -14,6 +14,11 @@ export default function LoginScreen({}) {
   const [email, setemail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const invalidCredential = "auth/invalid-credential";
+  const invalidEmail = "auth/invalid-email";
+  const emailInUse = "auth/email-already-in-use";
+  const weakPassword = "auth/weak-password";
+  const missingPassword = "auth/missing-password";
 
   const navigation = useNavigation();
 

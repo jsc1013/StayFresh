@@ -14,8 +14,12 @@ import { Divider } from "react-native-paper";
 import Toast from "react-native-toast-message";
 import { auth, firestoreDB } from "../config/firebase-config";
 import { myColors } from "../constants/Colors";
+import SwipeComponent from "../components/SwipeComponent";
+import mockupProducts from "../mockup/products.json";
 
 export default function HomeScreen({ route, navigation }) {
+  const [products, setProducts] = useState(mockupProducts);
+
   const { t } = useTranslation();
 
   // Sets the navigation options
@@ -81,6 +85,10 @@ export default function HomeScreen({ route, navigation }) {
     );
     return true;
   };
+
+  function handleEditProduct() {}
+
+  function handleDeleteProduct() {}
 
   return (
     <View style={styles.container}>
@@ -161,6 +169,12 @@ export default function HomeScreen({ route, navigation }) {
         </TouchableOpacity>
       </View>
 
+      {/* PRODUCT SUMMARY */}
+      <SwipeComponent
+        products={products}
+        functionEdit={handleEditProduct}
+        functionDelete={handleDeleteProduct}
+      ></SwipeComponent>
       <Toast></Toast>
     </View>
   );

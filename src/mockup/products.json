@@ -1,0 +1,21 @@
+[{
+    "key": "key1",
+    "name":"Producto1",
+    "brand":"Marcadona",
+    "quantity":"5",
+    "storage": "Nevera",
+    "remainingTimeCharacter": "d",
+    "remainingTime": "2",
+    "color": "green"
+  },
+  {
+    "key": "key2",
+    "name":"Producto2",
+    "brand":"Marcadona",
+    "quantity":"10",
+    "storage": "Nevera",
+    "remainingTimeCharacter": "d",
+    "remainingTime": "2",
+    "color": "green"
+  }
+]

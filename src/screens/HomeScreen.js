@@ -23,8 +23,30 @@ export default function HomeScreen({ route, navigation }) {
   }, []);
 
   // Sets the back options
-  useEffect(function navigationOptions() {
-    navigation.setOptions({ headerShown: false });
+  useEffect(function backOptions() {
+    const backAction = () => {
+      Alert.alert(
+        t("components.home.exitAppHeader"),
+        t("components.home.exitAppMessage"),
+        [
+          {
+            text: t("general.cancel"),
+            onPress: () => null,
+            style: "cancel",
+          },
+          {
+            text: t("general.yes"),
+            onPress: () => BackHandler.exitApp(),
+          },
+        ]
+      );
+      return true;
+    };
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      backAction
+    );
+    return () => backHandler.remove();
   }, []);
 
   // Manage logout

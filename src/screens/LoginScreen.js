@@ -2,6 +2,7 @@ import React, { useEffect, useLayoutEffect, useState } from "react";
 import { StyleSheet, View, Text, Image } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { TextInput, Button } from "react-native-paper";
+import Toast from "react-native-toast-message";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -50,7 +51,7 @@ export default function LoginScreen({}) {
         });
       })
       .catch((error) => {
-        console.log(checkCode(error.code));
+        showErrorCode(error.code);
       });
   }
 
@@ -66,14 +67,28 @@ export default function LoginScreen({}) {
         }
       })
       .catch((error) => {
-        console.log(checkCode(error.code));
+        showErrorCode(error.code);
       });
   }
 
-  // Checks the return errors from firebase
-  const checkCode = (code) => {
-    return t(`components.login.${code}`);
-  };
+  // Shows the toast component
+  function showToast(toastType, toastHeader, toastText, position = "top") {
+    Toast.show({
+      type: toastType,
+      text1: toastHeader,
+      text2: toastText,
+      position: position,
+    });
+  }
+
+  // Shows the firebase message error
+  function showErrorCode(code) {
+    showToast(
+      "error",
+      t("components.general.error"),
+      t(`components.login.${code}`)
+    );
+  }
 
   return (
     <View style={styles.container}>
@@ -147,6 +162,7 @@ export default function LoginScreen({}) {
       >
         {t("components.login.signUp")}
       </Button>
+      <Toast />
     </View>
   );
 }

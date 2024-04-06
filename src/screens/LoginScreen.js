@@ -14,6 +14,16 @@ export default function LoginScreen({}) {
     navigation.setOptions({ headerShown: false });
   }, []);
 
+  function handleCreateAccount() {
+    console.log(email);
+    console.log(password);
+  }
+
+  function handleSignIn() {
+    console.log(email);
+    console.log(password);
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.imageContainer}></View>
@@ -27,20 +37,56 @@ export default function LoginScreen({}) {
         <TextInput
           style={styles.input}
           placeholder={"Email"}
+          onChangeText={(text) => {
+            setemail(text);
+          }}
           value={email}
           keyboardType="email-address"
           theme={{ colors: { primary: myColors.mainGreen } }}
         />
       </View>
-
       <View style={styles.inputContainer}>
         <TextInput
           style={styles.input}
           placeholder={"Password"}
+          onChangeText={(text) => {
+            setPassword(text);
+          }}
           value={password}
           theme={{ colors: { primary: myColors.mainGreen } }}
         />
       </View>
+
+      <Button
+        mode="contained-tonal"
+        onPress={handleSignIn}
+        style={styles.button}
+        theme={{
+          colors: {
+            secondaryContainer: myColors.mainGreen,
+            onSecondaryContainer: myColors.white,
+          },
+        }}
+      >
+        Login
+      </Button>
+      <View style={styles.signupContainer}>
+        <Text style={styles.signupTextLeft}>{"¿No tiene cuenta?"}</Text>
+      </View>
+
+      <Button
+        mode="contained-tonal"
+        onPress={handleCreateAccount}
+        style={styles.button}
+        theme={{
+          colors: {
+            secondaryContainer: myColors.mainBlue,
+            onSecondaryContainer: myColors.white,
+          },
+        }}
+      >
+        {"Registro"}
+      </Button>
     </View>
   );
 }
@@ -72,5 +118,17 @@ const styles = StyleSheet.create({
     borderWidth: 0.5,
     borderRadius: 10,
     paddingHorizontal: 10,
+  },
+  button: {
+    marginTop: 20,
+    width: "100%",
+  },
+  signupContainer: {
+    marginTop: 20,
+    flexDirection: "row",
+    justifyContent: "flex-end",
+  },
+  signupTextLeft: {
+    marginRight: 5,
   },
 });

@@ -1,7 +1,18 @@
 {
    "components":{
       "login":{
-         "requestEmail":"Introduce your email"
+         "requestEmail":"Introduce your email",
+         "requestPassword":"Introduce your password",
+         "emailSent":"Verification email sent, check your email",
+         "emailNotVerified":"Email not yet verified",
+         "noAccount":"Don't have an account yet?",
+         "login":"Login", 
+         "signUp":"Sign Up",
+         "auth/invalid-credential":"Incorrect email or password",
+         "auth/invalid-email":"Invalid email",
+         "auth/email-already-in-use":"Email already in use",
+         "auth/weak-password":"Password should be at least 6 characters",
+         "auth/missing-password":"Missing password"
       },
       "general":{
          "error":"Error",

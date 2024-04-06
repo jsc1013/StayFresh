@@ -8,6 +8,8 @@ import {
   sendEmailVerification,
 } from "firebase/auth";
 import { auth } from "../config/firebase-config";
+import { i18next } from "../services/i18next";
+import { useTranslation } from "react-i18next";
 import { myColors } from "../constants/Colors";
 
 export default function LoginScreen({}) {
@@ -21,6 +23,7 @@ export default function LoginScreen({}) {
   const missingPassword = "auth/missing-password";
 
   const navigation = useNavigation();
+  const { t } = useTranslation();
 
   // Sets the navigation options
   useEffect(function navigationOptions() {
@@ -47,7 +50,7 @@ export default function LoginScreen({}) {
         });
       })
       .catch((error) => {
-        console.log(error.message);
+        console.log(checkCode(error.code));
       });
   }
 
@@ -63,9 +66,14 @@ export default function LoginScreen({}) {
         }
       })
       .catch((error) => {
-        console.log(error.message);
+        console.log(checkCode(error.code));
       });
   }
+
+  // Checks the return errors from firebase
+  const checkCode = (code) => {
+    return t(`components.login.${code}`);
+  };
 
   return (
     <View style={styles.container}>
@@ -79,7 +87,7 @@ export default function LoginScreen({}) {
       <View style={styles.inputContainer}>
         <TextInput
           style={styles.input}
-          placeholder={"Email"}
+          placeholder={t("components.login.requestEmail")}
           onChangeText={(text) => {
             setemail(text);
           }}
@@ -91,7 +99,7 @@ export default function LoginScreen({}) {
       <View style={styles.inputContainer}>
         <TextInput
           style={styles.input}
-          placeholder={"Password"}
+          placeholder={t("components.login.requestPassword")}
           onChangeText={(text) => {
             setPassword(text);
           }}
@@ -118,10 +126,12 @@ export default function LoginScreen({}) {
           },
         }}
       >
-        Login
+        {t("components.login.login")}
       </Button>
       <View style={styles.signupContainer}>
-        <Text style={styles.signupTextLeft}>{"¿No tiene cuenta?"}</Text>
+        <Text style={styles.signupTextLeft}>
+          {t("components.login.noAccount")}
+        </Text>
       </View>
 
       <Button
@@ -135,7 +145,7 @@ export default function LoginScreen({}) {
           },
         }}
       >
-        {"Registro"}
+        {t("components.login.signUp")}
       </Button>
     </View>
   );

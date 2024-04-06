@@ -17,29 +17,12 @@ export default function LoginScreen({}) {
   const [email, setemail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const invalidCredential = "auth/invalid-credential";
-  const invalidEmail = "auth/invalid-email";
-  const emailInUse = "auth/email-already-in-use";
-  const weakPassword = "auth/weak-password";
-  const missingPassword = "auth/missing-password";
-
   const navigation = useNavigation();
   const { t } = useTranslation();
 
   // Sets the navigation options
   useEffect(function navigationOptions() {
     navigation.setOptions({ headerShown: false });
-  }, []);
-
-  // Adds the listener to redirect if already loggedin
-  useEffect(function checkAuthState() {
-    auth.onAuthStateChanged((user) => {
-      if (user && user.emailVerified) {
-        console.log("User logged in, will redirect");
-      } else {
-        console.log("User not logged in");
-      }
-    });
   }, []);
 
   // Handles the create account logic
@@ -61,9 +44,13 @@ export default function LoginScreen({}) {
       .then((userCredential) => {
         const user = userCredential.user;
         if (user.emailVerified) {
-          console.log("Verified");
+          navigation.navigate("HomeScreen");
         } else {
-          console.log("Not verified");
+          showToast(
+            "error",
+            t("general.error"),
+            t("components.login.emailSent")
+          );
         }
       })
       .catch((error) => {

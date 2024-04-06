@@ -2,6 +2,12 @@ import React, { useEffect, useLayoutEffect, useState } from "react";
 import { StyleSheet, View, Text, Image } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { TextInput, Button } from "react-native-paper";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  sendEmailVerification,
+} from "firebase/auth";
+import { auth } from "../config/firebase-config";
 import { myColors } from "../constants/Colors";
 
 export default function LoginScreen({}) {

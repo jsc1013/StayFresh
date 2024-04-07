@@ -211,8 +211,7 @@ export default function HomeScreen({ route, navigation }) {
     }
     setEditProductModalVisible(false);
     showLoadingModal();
-    let result = await updateProductQuantity(updateProductId, inputNumber);
-    if (result) {
+    if (await updateProductQuantity(updateProductId, inputNumber)) {
       updateUserProducts();
       showToast(
         "success",
@@ -253,8 +252,7 @@ export default function HomeScreen({ route, navigation }) {
   // Calls to consume product
   async function confirmConsumeProduct(productid) {
     showLoadingModal();
-    let result = await consumeProduct(productid);
-    if (result) {
+    if (await consumeProduct(productid)) {
       updateUserProducts();
       showToast(
         "success",

@@ -1,3 +1,3 @@
-export default function AddProductScreenScreen({}) {
+export default function AddProductScreenScreen({ route, navigation }) {
   return <View></View>;
 }

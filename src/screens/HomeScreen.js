@@ -325,7 +325,14 @@ export default function HomeScreen({ route, navigation }) {
       {/* HEADER */}
       <View style={styles.header}>
         <View style={styles.headerHomeManagementContainer}>
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate("HomeManagementScreen", {
+                userHomes: userHomes,
+                parentFunction: loadUserData,
+              });
+            }}
+          >
             <Image
               source={require("../assets/homeManagement.png")}
               style={styles.headerHomeManagementButton}
@@ -348,7 +355,22 @@ export default function HomeScreen({ route, navigation }) {
       <View style={styles.buttonsContainer}>
         {/* ADD PRODUCT */}
         <View style={styles.buttonContainer}>
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              if (defaultHomeID != "") {
+                navigation.navigate("AddProductScreen", {
+                  defaultHome: defaultHomeID,
+                  parentFunction: loadUserProducts,
+                });
+              } else {
+                showToast(
+                  "error",
+                  t("general.error"),
+                  t("components.home.missingDefaultHome")
+                );
+              }
+            }}
+          >
             <Image
               source={require("../assets/addProduct.png")}
               style={styles.buttonImage}
@@ -356,9 +378,17 @@ export default function HomeScreen({ route, navigation }) {
           </TouchableOpacity>
           <Text style={styles.buttonText}>{t("components.home.addText")}</Text>
         </View>
+
         {/* CONSUME PRODUCT */}
         <View style={styles.buttonContainer}>
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate("ConsumeProductScreen", {
+                defaultHome: defaultHomeID,
+                parentFunction: loadUserProducts,
+              });
+            }}
+          >
             <Image
               source={require("../assets/removeProduct.png")}
               style={styles.buttonImage}
@@ -368,9 +398,17 @@ export default function HomeScreen({ route, navigation }) {
             {t("components.home.consumeText")}
           </Text>
         </View>
+
         {/* STORAGE */}
         <View style={styles.buttonContainer}>
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate("StorageScreen", {
+                defaultHome: defaultHomeID,
+                parentFunction: loadUserProducts,
+              })
+            }
+          >
             <Image
               source={require("../assets/storage.png")}
               style={styles.buttonImage}

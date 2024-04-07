@@ -11,6 +11,7 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
+import { BlurView } from "expo-blur";
 import { useTranslation } from "react-i18next";
 import { Divider } from "react-native-paper";
 import Toast from "react-native-toast-message";
@@ -38,8 +39,8 @@ export default function HomeScreen({ route, navigation }) {
   const [userHomes, setUserHomes] = useState([]);
   const [defaultHomeID, setDefaultHomeID] = useState("");
   const [defaultHomeName, setDefaultHomeName] = useState("");
-  const [defaultHomePreviewDays, setDefaultHomePreviewDays] = useState(7);
-  const [defaultHomePreviewDate, setDefaultHomePreviewDate] = useState(0);
+  const [defaultHomePreviewDays, setDefaultHomePreviewDays] = useState();
+  const [defaultHomePreviewDate, setDefaultHomePreviewDate] = useState();
 
   const [products, setProducts] = useState([]);
 
@@ -56,7 +57,7 @@ export default function HomeScreen({ route, navigation }) {
   const milisecondsInDay = 86400000;
 
   // Sets the navigation options
-  useEffect(function navigationOptions() {
+  useLayoutEffect(function navigationOptions() {
     navigation.setOptions({ headerShown: false });
   }, []);
 
@@ -296,9 +297,13 @@ export default function HomeScreen({ route, navigation }) {
         transparent={true}
         visible={loadingModalVisible}
       >
-        <View style={styles.loadingModalBackground}>
+        <BlurView
+          intensity={90}
+          tint="light"
+          style={styles.loadingModalBackground}
+        >
           <ActivityIndicator size="large"></ActivityIndicator>
-        </View>
+        </BlurView>
       </Modal>
 
       {/* NUMBER INPUT MODAL */}
@@ -520,7 +525,6 @@ const styles = StyleSheet.create({
     marginRight: 25,
   },
   loadingModalBackground: {
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
     flex: 1,
     justifyContent: "center",
   },

@@ -1,5 +1,5 @@
 import { firestoreDB } from "../config/firebase-config";
-import { collection, query, getDoc, doc, setDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 
 export const getUserData = async (id) => {
   try {
@@ -17,6 +17,18 @@ export const createUserProfile = async (id) => {
     });
     return true;
   } catch (e) {
+    return false;
+  }
+};
+
+export const updateUserHomes = async (id, homes) => {
+  try {
+    updateDoc(doc(firestoreDB, "users", id), {
+      homes: homes,
+    });
+    return true;
+  } catch (e) {
+    console.log(e);
     return false;
   }
 };

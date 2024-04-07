@@ -17,6 +17,7 @@ import Toast from "react-native-toast-message";
 import { auth, firestoreDB } from "../config/firebase-config";
 import { myColors } from "../constants/Colors";
 import SwipeComponent from "../components/SwipeComponent";
+import DropdownInputModal from "../components/DropdownModalComponent";
 import mockupProducts from "../mockup/products.json";
 import { isInt } from "../helpers/dataTypesChecks";
 import {
@@ -24,12 +25,17 @@ import {
   updateProductQuantity,
   consumeProduct,
 } from "../services/productService";
-import { getUserData, createUserProfile } from "../services/userService";
+import {
+  getUserData,
+  createUserProfile,
+  updateUserHomes,
+} from "../services/userService";
 import NumberInputModal from "../components/NumberInputModalComponent";
 
 export default function HomeScreen({ route, navigation }) {
   const [loadingModalVisible, setLoadingModalVisible] = useState(true);
 
+  const [userHomes, setUserHomes] = useState([]);
   const [defaultHomeID, setDefaultHomeID] = useState("");
   const [defaultHomeName, setDefaultHomeName] = useState("");
   const [defaultHomePreviewDays, setDefaultHomePreviewDays] = useState(7);
@@ -39,6 +45,11 @@ export default function HomeScreen({ route, navigation }) {
 
   const [editProductModalVisible, setEditProductModalVisible] = useState(false);
   const [updateProductId, setUpdateProductId] = useState("");
+
+  const [dropdownInputModalVisible, setDropdownInputModalVisible] =
+    useState(false);
+
+  const dropDownOptions = [3, 7, 15];
 
   const { t } = useTranslation();
 
@@ -105,6 +116,7 @@ export default function HomeScreen({ route, navigation }) {
   async function loadUserData() {
     userData = await getUserData(auth.currentUser.email);
     if (userData) {
+      setUserHomes(userData.homes);
       var searchDefault = userData.homes.find((home) => home.default == true);
       if (searchDefault != undefined) {
         let previewDate = setUserInitialData(searchDefault);
@@ -118,8 +130,11 @@ export default function HomeScreen({ route, navigation }) {
   }
 
   // Loads all products for a home
-  async function loadUserProducts(homeId) {
-    getUserProductsPreviewDate(homeId).then((prod) => {
+  async function loadUserProducts(
+    homeId,
+    previewDate = defaultHomePreviewDate
+  ) {
+    getUserProductsPreviewDate(homeId, previewDate).then((prod) => {
       setProducts(prod);
       closeLoadingModal();
     });
@@ -147,7 +162,7 @@ export default function HomeScreen({ route, navigation }) {
   // Updates the user products on screen
   function updateUserProducts() {
     showLoadingModal(true);
-    loadUserProducts(defaultHomeID);
+    loadUserProducts(defaultHomeID, defaultHomePreviewDate);
   }
 
   // Manage logout
@@ -214,11 +229,6 @@ export default function HomeScreen({ route, navigation }) {
     }
   }
 
-  // Callback function for cancel button in number modal
-  function handleModalCancelEdit() {
-    setEditProductModalVisible(false);
-  }
-
   // Callback function for consume button in swipe list
   function handleConsumeProduct(productid) {
     Alert.alert(
@@ -261,6 +271,23 @@ export default function HomeScreen({ route, navigation }) {
     }
   }
 
+  // Callback function for dropdown input modal
+  async function handleDropdownInputModal(value) {
+    setDropdownInputModalVisible(false);
+    previewDate = parseInt(value) * 86400000 + new Date().getTime();
+    setLoadingModalVisible(true);
+    tempUserHomes = [...userHomes];
+    let home = tempUserHomes.find((userHome) => userHome.id == defaultHomeID);
+    home.previewDays = parseInt(value);
+    let result = await updateUserHomes(auth.currentUser.email, tempUserHomes);
+    if (result) {
+      setUserHomes(tempUserHomes);
+      setDefaultHomePreviewDays(parseInt(value));
+      setDefaultHomePreviewDate(parseInt(previewDate));
+      loadUserProducts(defaultHomeID, parseInt(previewDate));
+    }
+  }
+
   return (
     <View style={styles.container}>
       <StatusBar></StatusBar>
@@ -279,9 +306,23 @@ export default function HomeScreen({ route, navigation }) {
       {/* NUMBER INPUT MODAL */}
       <NumberInputModal
         visible={editProductModalVisible}
-        onCancel={handleModalCancelEdit}
+        onCancel={() => {
+          setEditProductModalVisible(false);
+        }}
         onConfirm={handleModalConfirmEdit}
       />
+
+      {/* DROPDOWN MODAL */}
+      <DropdownInputModal
+        visible={dropdownInputModalVisible}
+        onCancel={() => {
+          setDropdownInputModalVisible(false);
+        }}
+        onConfirm={handleDropdownInputModal}
+        placeholder={t("components.home.defaultPreviewDays")}
+        receivedItems={dropDownOptions}
+        sortText={false}
+      ></DropdownInputModal>
 
       {/* HEADER */}
       <View style={styles.header}>
@@ -346,7 +387,7 @@ export default function HomeScreen({ route, navigation }) {
       {/* NEXT TO EXPIRE */}
       <View style={styles.nextToExpireContainer}>
         <View style={styles.nextToExpireTextContainer}>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => setDropdownInputModalVisible(true)}>
             <Text style={styles.nextToExpireText}>
               {" "}
               {t("components.home.nextExpiraciesText", {

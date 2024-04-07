@@ -77,26 +77,6 @@ export default function AddProductScreenScreen({ route, navigation }) {
     fetchProducts();
   }, []);
 
-  // ManageOpenStorage
-  useEffect(
-    function manageOpenStorage() {
-      if (openStorage) {
-        setOpenSearch(false);
-      }
-    },
-    [openStorage]
-  );
-
-  // ManageOpenSearch
-  useEffect(
-    function manageOpenSearch() {
-      if (openSearch) {
-        setOpenStorage(false);
-      }
-    },
-    [openSearch]
-  );
-
   // Gets the different storages from the defaultHome
   useEffect(() => {
     async function getStorages() {
@@ -371,7 +351,6 @@ const styles = StyleSheet.create({
     height: 55,
     borderColor: "gray",
     backgroundColor: "white",
-    borderWidth: 0.5,
     width: "100%",
   },
   inputDate: {

@@ -246,7 +246,12 @@ export default function HomeScreen({ route, navigation }) {
       <View style={styles.nextToExpireContainer}>
         <View style={styles.nextToExpireTextContainer}>
           <TouchableOpacity>
-            <Text style={styles.nextToExpireText}>Proximos 15 días</Text>
+            <Text style={styles.nextToExpireText}>
+              {" "}
+              {t("components.home.nextExpiraciesText", {
+                days: defaultHomePreviewDays,
+              })}
+            </Text>
           </TouchableOpacity>
         </View>
         <TouchableOpacity onPress={() => updateUserProducts()}>

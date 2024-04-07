@@ -30,7 +30,9 @@
      "missingDefaultHome": "Primero debe crear o establecer un hogar",
      "defaultPreviewDays": "Seleccione número de días",
      "productUpdated": "Producto actualizado",
-     "productNotUpdated": "Error al actualizar producto"
+     "productNotUpdated": "Error al actualizar producto",
+     "productConsumed": "Producto consumido",
+     "productNotConsumed": "Error al consumir producto"
    },
    "general":{
       "error":"Error",

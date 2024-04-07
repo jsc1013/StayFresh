@@ -29,7 +29,9 @@
          "missingDefaultHome": "First set or create a default home",
          "defaultPreviewDays": "Select amount of days",
          "productUpdated": "Product updated",
-         "productNotUpdated": "Error updating product"
+         "productNotUpdated": "Error updating product",
+         "productConsumed": "Product consumed",
+         "productNotConsumed": "Error consuming product"
       },      
       "modal": {
          "units": "Introduce new units"

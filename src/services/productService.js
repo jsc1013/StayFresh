@@ -76,3 +76,15 @@ export async function updateProductQuantity(productId, quantity) {
     return false;
   }
 }
+
+export async function consumeProduct(productId) {
+  try {
+    await updateDoc(doc(firestoreDB, "products", productId), {
+      consumed: true,
+    });
+    return true;
+  } catch (e) {
+    console.log(e);
+    return false;
+  }
+}

@@ -22,6 +22,7 @@ import { isInt } from "../helpers/dataTypesChecks";
 import {
   getUserProductsPreviewDate,
   updateProductQuantity,
+  consumeProduct,
 } from "../services/productService";
 import { getUserData, createUserProfile } from "../services/userService";
 import NumberInputModal from "../components/NumberInputModalComponent";
@@ -209,8 +210,8 @@ export default function HomeScreen({ route, navigation }) {
         t("general.error"),
         t("components.home.productNotUpdated")
       );
+      closeLoadingModal();
     }
-    closeLoadingModal();
   }
 
   // Callback function for cancel button in number modal
@@ -218,7 +219,47 @@ export default function HomeScreen({ route, navigation }) {
     setEditProductModalVisible(false);
   }
 
-  function handleDeleteProduct() {}
+  // Callback function for consume button in swipe list
+  function handleConsumeProduct(productid) {
+    Alert.alert(
+      t("components.home.deleteProductHeader"),
+      t("components.home.deleteProductMessage"),
+      [
+        {
+          text: t("general.cancel"),
+          onPress: () => null,
+          style: "cancel",
+        },
+        {
+          text: t("general.yes"),
+          onPress: () => {
+            confirmConsumeProduct(productid);
+          },
+        },
+      ]
+    );
+  }
+
+  // Calls to consume product
+  async function confirmConsumeProduct(productid) {
+    showLoadingModal();
+    let result = await consumeProduct(productid);
+    if (result) {
+      updateUserProducts();
+      showToast(
+        "success",
+        t("general.success"),
+        t("components.home.productConsumed")
+      );
+    } else {
+      showToast(
+        "error",
+        t("general.error"),
+        t("components.home.productNotConsumed")
+      );
+      closeLoadingModal();
+    }
+  }
 
   return (
     <View style={styles.container}>
@@ -326,7 +367,7 @@ export default function HomeScreen({ route, navigation }) {
       <SwipeComponent
         products={products}
         functionEdit={handleSwipeEditProduct}
-        functionDelete={handleDeleteProduct}
+        functionDelete={handleConsumeProduct}
       ></SwipeComponent>
       <Toast></Toast>
     </View>

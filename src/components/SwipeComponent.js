@@ -53,14 +53,14 @@ export default function SwipeComponent({
     <View style={styles.rowBack}>
       <TouchableOpacity
         style={[styles.buttonRemove]}
-        onPress={() => deleteRow(rowMap, data.key, data)}
+        onPress={() => deleteRow(rowMap, data.item.key, data)}
       >
         <Image source={require("../assets/delete.png")} style={styles.trash} />
       </TouchableOpacity>
 
       <TouchableOpacity
         style={[styles.buttonEdit]}
-        onPress={() => editRow(rowMap, data.key, data)}
+        onPress={() => editRow(rowMap, data.item.key, data)}
       >
         <Image source={require("../assets/edit.png")} style={styles.trash} />
       </TouchableOpacity>

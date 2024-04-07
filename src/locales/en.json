@@ -27,7 +27,12 @@
          "deleteProductHeader": "Delete product",
          "deleteProductMessage": "Do you want to delete the product?",
          "missingDefaultHome": "First set or create a default home",
-         "defaultPreviewDays": "Select amount of days"
+         "defaultPreviewDays": "Select amount of days",
+         "productUpdated": "Product updated",
+         "productNotUpdated": "Error updating product"
+      },      
+      "modal": {
+         "units": "Introduce new units"
       }
    },
    "general":{

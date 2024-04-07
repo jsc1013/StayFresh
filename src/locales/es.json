@@ -28,7 +28,9 @@
      "deleteProductHeader": "Eliminar producto",
      "deleteProductMessage": "¿Seguro que quiere eliminar el producto?",
      "missingDefaultHome": "Primero debe crear o establecer un hogar",
-     "defaultPreviewDays": "Seleccione número de días"
+     "defaultPreviewDays": "Seleccione número de días",
+     "productUpdated": "Producto actualizado",
+     "productNotUpdated": "Error al actualizar producto"
    },
    "general":{
       "error":"Error",
@@ -38,5 +40,8 @@
       "cancel":"Cancelar",
       "shortDays":"d",
       "shortWeeks":"s"
+   },
+   "modal": {
+      "units": "Introduzca nuevas unidades"
    }
 }

@@ -18,18 +18,26 @@ import { auth, firestoreDB } from "../config/firebase-config";
 import { myColors } from "../constants/Colors";
 import SwipeComponent from "../components/SwipeComponent";
 import mockupProducts from "../mockup/products.json";
-import { getUserProductsPreviewDate } from "../services/productService";
+import { isInt } from "../helpers/dataTypesChecks";
+import {
+  getUserProductsPreviewDate,
+  updateProductQuantity,
+} from "../services/productService";
 import { getUserData, createUserProfile } from "../services/userService";
+import NumberInputModal from "../components/NumberInputModalComponent";
 
 export default function HomeScreen({ route, navigation }) {
+  const [loadingModalVisible, setLoadingModalVisible] = useState(true);
+
   const [defaultHomeID, setDefaultHomeID] = useState("");
   const [defaultHomeName, setDefaultHomeName] = useState("");
   const [defaultHomePreviewDays, setDefaultHomePreviewDays] = useState(7);
   const [defaultHomePreviewDate, setDefaultHomePreviewDate] = useState(0);
 
-  const [loadingModalVisible, setLoadingModalVisible] = useState(true);
-
   const [products, setProducts] = useState([]);
+
+  const [editProductModalVisible, setEditProductModalVisible] = useState(false);
+  const [updateProductId, setUpdateProductId] = useState("");
 
   const { t } = useTranslation();
 
@@ -71,6 +79,16 @@ export default function HomeScreen({ route, navigation }) {
   useLayoutEffect(() => {
     loadUserData();
   }, []);
+
+  // Shows the toast component
+  function showToast(toastType, toastHeader, toastText, position = "top") {
+    Toast.show({
+      type: toastType,
+      text1: toastHeader,
+      text2: toastText,
+      position: position,
+    });
+  }
 
   // Shows the loading modal
   function showLoadingModal() {
@@ -132,7 +150,7 @@ export default function HomeScreen({ route, navigation }) {
   }
 
   // Manage logout
-  const logoutAction = () => {
+  function logoutAction() {
     const handleLogout = () => {
       auth
         .signOut()
@@ -161,9 +179,44 @@ export default function HomeScreen({ route, navigation }) {
       ]
     );
     return true;
-  };
+  }
 
-  function handleEditProduct() {}
+  // Callback function for edit button in swipe list
+  function handleSwipeEditProduct(productid) {
+    setUpdateProductId(productid);
+    setEditProductModalVisible(true);
+  }
+
+  // Callback function for confirm button in number modal
+  async function handleModalConfirmEdit(inputNumber) {
+    if (!isInt(inputNumber) || inputNumber <= 0) {
+      Alert.alert(t("components.home.positiveValue"));
+      return;
+    }
+    setEditProductModalVisible(false);
+    showLoadingModal();
+    let result = await updateProductQuantity(updateProductId, inputNumber);
+    if (result) {
+      updateUserProducts();
+      showToast(
+        "success",
+        t("general.success"),
+        t("components.home.productUpdated")
+      );
+    } else {
+      showToast(
+        "error",
+        t("general.error"),
+        t("components.home.productNotUpdated")
+      );
+    }
+    closeLoadingModal();
+  }
+
+  // Callback function for cancel button in number modal
+  function handleModalCancelEdit() {
+    setEditProductModalVisible(false);
+  }
 
   function handleDeleteProduct() {}
 
@@ -181,6 +234,13 @@ export default function HomeScreen({ route, navigation }) {
           <ActivityIndicator size="large"></ActivityIndicator>
         </View>
       </Modal>
+
+      {/* NUMBER INPUT MODAL */}
+      <NumberInputModal
+        visible={editProductModalVisible}
+        onCancel={handleModalCancelEdit}
+        onConfirm={handleModalConfirmEdit}
+      />
 
       {/* HEADER */}
       <View style={styles.header}>
@@ -265,7 +325,7 @@ export default function HomeScreen({ route, navigation }) {
       {/* PRODUCT SUMMARY */}
       <SwipeComponent
         products={products}
-        functionEdit={handleEditProduct}
+        functionEdit={handleSwipeEditProduct}
         functionDelete={handleDeleteProduct}
       ></SwipeComponent>
       <Toast></Toast>

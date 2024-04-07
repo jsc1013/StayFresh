@@ -1,5 +1,12 @@
 import { firestoreDB } from "../config/firebase-config";
-import { collection, query, getDocs, where } from "firebase/firestore";
+import {
+  collection,
+  query,
+  doc,
+  getDocs,
+  updateDoc,
+  where,
+} from "firebase/firestore";
 import { myColors } from "../constants/Colors";
 import i18next from "../services/i18next";
 
@@ -26,6 +33,7 @@ export const getUserProductsPreviewDate = async (
   docs.forEach((docProduct) => {
     let product = docProduct.data();
     product.id = docProduct.id;
+    product.key = docProduct.id;
     product = calculateProductProperties(product);
     products.push(product);
   });
@@ -55,4 +63,16 @@ function calculateProductProperties(product) {
     product.color = myColors.noConsumeCondition;
   }
   return product;
+}
+
+export async function updateProductQuantity(productId, quantity) {
+  try {
+    await updateDoc(doc(firestoreDB, "products", productId), {
+      quantity: parseInt(quantity),
+    });
+    return true;
+  } catch (e) {
+    console.log(e);
+    return false;
+  }
 }

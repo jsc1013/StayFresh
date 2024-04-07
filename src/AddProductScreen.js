@@ -2,34 +2,25 @@ import React, { useEffect, useLayoutEffect, useState } from "react";
 import {
   StyleSheet,
   View,
+  Text,
   Image,
   LogBox,
+  KeyboardAvoidingView,
   TouchableOpacity,
-  ScrollView,
 } from "react-native";
 import Header from "../components/HeaderComponent";
 import { TextInput, Button } from "react-native-paper";
 import DropDownPicker from "react-native-dropdown-picker";
-import Toast from "react-native-toast-message";
 import { myColors } from "../constants/Colors";
-import { useDebounce } from "use-debounce";
 import { useTranslation } from "react-i18next";
-import { getHomeStorages } from "../services/homeService";
-import { getAllProductsPeriod } from "../services/productService";
 
 export default function AddProductScreenScreen({ route, navigation }) {
   const { t } = useTranslation();
   const defaultHome = route.params.defaultHome;
 
-  const [allProductsPeriod, setAllProductsPeriod] = useState([]);
-
-  const days = 180;
-  const fetchPeriod = new Date().getTime() - 1000 * 60 * 60 * 24 * days;
-
   // Search
   const [openSearch, setOpenSearch] = useState(false);
   const [searchText, setSearchText] = useState("");
-  const [searchTextDebounce] = useDebounce(searchText, 300);
   const [searchedText, setSearchedText] = useState("");
   const [searchItems, setSearchItems] = useState([]);
 
@@ -47,133 +38,27 @@ export default function AddProductScreenScreen({ route, navigation }) {
   // Date
   const [expirationDate, setExpirationDate] = useState(new Date());
 
-  const showToast = (toastType, toastHeader, toastText) => {
-    Toast.show({
-      type: toastType,
-      text1: toastHeader,
-      text2: toastText,
-      position: "top",
-    });
-  };
-
   // Navigation and back options
   useLayoutEffect(function navigationOptions() {
     LogBox.ignoreAllLogs(true);
     navigation.setOptions({
       headerShown: false,
     });
+
     navigation.addListener("beforeRemove", (e) => {
       route.params.parentFunction(defaultHome);
     });
   }, []);
 
-  // fetchProducts
-  useEffect(() => {
-    async function fetchProducts() {
-      let products = await getAllProductsPeriod(defaultHome, fetchPeriod);
-      setAllProductsPeriod(products);
-    }
-    fetchProducts();
-  }, []);
-
-  // ManageOpenStorage
-  useEffect(
-    function manageOpenStorage() {
-      if (openStorage) {
-        setOpenSearch(false);
-      }
-    },
-    [openStorage]
-  );
-
-  // ManageOpenSearch
-  useEffect(
-    function manageOpenSearch() {
-      if (openSearch) {
-        setOpenStorage(false);
-      }
-    },
-    [openSearch]
-  );
-
-  // Gets the different storages from the defaultHome
-  useEffect(() => {
-    async function getStorages() {
-      storagesFirebase = await getHomeStorages(defaultHome);
-      tempItemsStorage = [];
-      storagesFirebase.forEach((storage) => {
-        tempItemsStorage.push({ label: storage, value: storage });
-      });
-      setStorageItems(tempItemsStorage);
-    }
-    getStorages();
-  }, []);
-
-  // Handles searchText changes
-  useEffect(
-    function manageSearchText() {
-      tempItems = [];
-      if (searchTextDebounce != "" && searchTextDebounce.length > 1) {
-        allProductsPeriod.forEach((product) => {
-          if (
-            (product["barcode"] != undefined &&
-              product["barcode"].includes(searchTextDebounce.toLowerCase())) ||
-            product["name"]
-              .toLowerCase()
-              .includes(searchTextDebounce.toLowerCase()) ||
-            (product["brand"] != undefined &&
-              product["brand"]
-                .toLowerCase()
-                .includes(searchTextDebounce.toLowerCase()))
-          ) {
-            if (product.brand == undefined) {
-              product.brand = "";
-            }
-
-            if (product.barcode == undefined) {
-              product.brand = "";
-            }
-            tempItems.push({
-              label:
-                product.name + " - " + product.brand + " - " + product.barcode,
-              value: product.id,
-            });
-          }
-        });
-        setSearchItems(tempItems);
-      } else {
-        setSearchItems([]);
-      }
-    },
-    [searchTextDebounce]
-  );
-
-  function getProductById(id) {
-    const productFound = allProductsPeriod.find((product) => product.id === id);
-    setProductName(productFound.name);
-    setProductBrand(productFound.brand);
-
-    productFound.barcode == undefined
-      ? setProductBarcode("")
-      : setProductBarcode(productFound.barcode);
-  }
-
-  const resetFields = () => {
-    setProductName("");
-    setProductBrand("");
-    setProductQuantity("");
-    setProductBarcode("");
-    setExpirationDate(new Date());
-  };
-
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView behavior="height" style={styles.container}>
       <Header
         callBackFunction={() => {
           navigation.goBack();
         }}
       />
-      <ScrollView contentContainerStyle={styles.body}>
+
+      <View style={styles.body}>
         <TouchableOpacity>
           <Image
             source={require("../assets/barcodeCameraAdd.png")}
@@ -210,7 +95,6 @@ export default function AddProductScreenScreen({ route, navigation }) {
             setSearchText(text);
           }}
         />
-
         <TextInput
           style={styles.input}
           label={t("components.addProduct.barcode")}
@@ -250,21 +134,6 @@ export default function AddProductScreenScreen({ route, navigation }) {
           theme={{ colors: { primary: myColors.mainBlue } }}
         />
 
-        <DropDownPicker
-          open={openStorage}
-          value={storageValue}
-          items={storageItems}
-          setOpen={setOpenStorage}
-          setValue={setStorageValue}
-          setItems={setStorageItems}
-          theme="LIGHT"
-          multiple={false}
-          mode="SIMPLE"
-          listMode="MODAL"
-          modalAnimationType="fade"
-          placeholder={t("components.addProduct.selectStorage")}
-          style={styles.dropdown}
-        />
         <TouchableOpacity
           style={{ width: "100%" }}
           onPress={() => showDatepicker()}
@@ -278,21 +147,21 @@ export default function AddProductScreenScreen({ route, navigation }) {
             editable={false}
           />
         </TouchableOpacity>
-        <Button
-          mode="contained-tonal"
-          style={styles.addProductButton}
-          theme={{
-            colors: {
-              secondaryContainer: myColors.mainGreen,
-              onSecondaryContainer: myColors.white,
-            },
-          }}
-        >
-          {t("components.addProduct.addProductButton")}
-        </Button>
-      </ScrollView>
-      <Toast />
-    </View>
+      </View>
+
+      <Button
+        mode="contained-tonal"
+        style={styles.addProductButton}
+        theme={{
+          colors: {
+            secondaryContainer: myColors.mainGreen,
+            onSecondaryContainer: myColors.white,
+          },
+        }}
+      >
+        {t("components.addProduct.addProductButton")}
+      </Button>
+    </KeyboardAvoidingView>
   );
 }
 
@@ -305,7 +174,7 @@ const styles = StyleSheet.create({
   },
   body: {
     flex: 1,
-    justifyContent: "space-between",
+    justifyContent: "space-evenly",
     alignItems: "center",
   },
   scanImage: {
@@ -332,13 +201,5 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     borderWidth: 1,
     borderColor: "black",
-  },
-  dropdown: {
-    width: "100%",
-    height: 60,
-    borderColor: "gray",
-    backgroundColor: "white",
-    borderWidth: 0.5,
-    borderRadius: 6,
   },
 });

@@ -3,36 +3,56 @@
       "login":{
          "requestEmail":"Introduzca su email",
          "requestPassword":"Introduzca su contraseña",
-         "emailSent": "Email de verificación enviado, compruebe su correo",
-         "emailNotVerified": "Email no verificado",
-         "noAccount": "¿Todavía no tiene cuenta?",
-         "signUp": "Registrarse",
+         "emailSent":"Email de verificación enviado, compruebe su correo",
+         "emailNotVerified":"Email no verificado",
+         "noAccount":"¿Todavía no tiene cuenta?",
+         "signUp":"Registrarse",
          "login":"Iniciar sesión",
          "auth/invalid-credential":"Usuario y/o contraseña incorrectos",
          "auth/invalid-email":"Email inválido",
          "auth/email-already-in-use":"Email en uso",
          "auth/weak-password":"La contraseña debe tener el menos 6 caracteres",
          "auth/missing-password":"Introduzca contraseña"
+      },
+      "home":{
+         "exitAppHeader":"¡Espere!",
+         "exitAppMessage":"¿Quiere salir de la aplicación?",
+         "logoutAppHeader":"¡Espere!",
+         "logoutAppMessage":"¿Quiere cerrar la sesión?",
+         "addText":"Añadir",
+         "consumeText":"Consumir",
+         "storageText":"Almacenamiento",
+         "nextExpiraciesText":"Próximos {{days}} días",
+         "positiveValue":"Error. El valor debe ser un número positivo",
+         "deleteProductHeader":"Eliminar producto",
+         "deleteProductMessage":"¿Seguro que quiere eliminar el producto?",
+         "missingDefaultHome":"Primero debe crear o establecer un hogar",
+         "defaultPreviewDays":"Seleccione número de días",
+         "productUpdated":"Producto actualizado",
+         "productNotUpdated":"Error al actualizar producto",
+         "productConsumed":"Producto consumido",
+         "productNotConsumed":"Error al consumir producto"
+      },
+      "modal":{
+         "units":"Introduzca nuevas unidades"
+      },
+      "addProduct":{
+         "title":"Añadir producto",
+         "searchText":"Buscar...",
+         "search":"Buscar por nombre, marca o código de barras...",
+         "searchNothing":"Nada que mostrar",
+         "productName":"Nombre del producto",
+         "productBrand":"Marca",
+         "selectStorage":"Seleccione ubicación",
+         "productQuantity":"Cantidad",
+         "productExpirationDate":"Fecha caducidad",
+         "addProductButton":"Añadir producto",
+         "missingFields":"Error. Rellene todos los campos",
+         "added":"Producto añadido",
+         "barcode":"Código de barras",
+         "scan":"Escanear código de barras",
+         "productNotFound":"Producto no encontrado, añádalo"
       }
-   },
-   "home":{
-     "exitAppHeader": "¡Espere!",
-     "exitAppMessage": "¿Quiere salir de la aplicación?",
-     "logoutAppHeader":"¡Espere!",
-     "logoutAppMessage":"¿Quiere cerrar la sesión?",
-     "addText": "Añadir",
-     "consumeText": "Consumir",
-     "storageText": "Almacenamiento",
-     "nextExpiraciesText": "Próximos {{days}} días",
-     "positiveValue": "Error. El valor debe ser un número positivo",
-     "deleteProductHeader": "Eliminar producto",
-     "deleteProductMessage": "¿Seguro que quiere eliminar el producto?",
-     "missingDefaultHome": "Primero debe crear o establecer un hogar",
-     "defaultPreviewDays": "Seleccione número de días",
-     "productUpdated": "Producto actualizado",
-     "productNotUpdated": "Error al actualizar producto",
-     "productConsumed": "Producto consumido",
-     "productNotConsumed": "Error al consumir producto"
    },
    "general":{
       "error":"Error",
@@ -42,8 +62,5 @@
       "cancel":"Cancelar",
       "shortDays":"d",
       "shortWeeks":"s"
-   },
-   "modal": {
-      "units": "Introduzca nuevas unidades"
    }
 }

@@ -84,3 +84,27 @@ export async function consumeProduct(productId) {
     return false;
   }
 }
+
+export async function getAllProductsPeriod(homeId, fetchPeriod) {
+  tempItemsStorage = [];
+  const q = query(
+    collection(firestoreDB, "products"),
+    (where("home", "==", homeId), where("addedDate", ">=", fetchPeriod))
+  );
+
+  tempArray = [];
+  docs = await getDocs(q);
+
+  docs.forEach((doc) => {
+    product = doc.data();
+    product.id = doc.id;
+    tempArray.push(product);
+  });
+
+  const filteredArray = tempArray.filter(
+    (obj, index) =>
+      tempArray.findIndex((item) => item.barcode === obj.barcode) === index
+  );
+
+  return filteredArray;
+}

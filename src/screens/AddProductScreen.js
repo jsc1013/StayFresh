@@ -10,12 +10,13 @@ import {
 import Header from "../components/HeaderComponent";
 import { TextInput, Button } from "react-native-paper";
 import DropDownPicker from "react-native-dropdown-picker";
+import { DateTimePickerAndroid } from "@react-native-community/datetimepicker";
 import Toast from "react-native-toast-message";
 import { myColors } from "../constants/Colors";
 import { useDebounce } from "use-debounce";
 import { useTranslation } from "react-i18next";
 import { getHomeStorages } from "../services/homeService";
-import { getAllProductsPeriod } from "../services/productService";
+import { getAllProductsPeriod, addProduct } from "../services/productService";
 
 export default function AddProductScreenScreen({ route, navigation }) {
   const { t } = useTranslation();
@@ -158,13 +159,66 @@ export default function AddProductScreenScreen({ route, navigation }) {
       : setProductBarcode(productFound.barcode);
   }
 
-  const resetFields = () => {
+  function resetFields() {
     setProductName("");
     setProductBrand("");
     setProductQuantity("");
     setProductBarcode("");
     setExpirationDate(new Date());
-  };
+  }
+
+  function onTimePickerChange(event, selectedDate) {
+    const currentDate = selectedDate;
+    setExpirationDate(currentDate);
+  }
+
+  function showMode(currentMode) {
+    DateTimePickerAndroid.open({
+      value: expirationDate,
+      onChange: onTimePickerChange,
+      mode: currentMode,
+      is24Hour: true,
+    });
+  }
+
+  function showDatepicker() {
+    showMode("date");
+  }
+
+  async function handleAddProduct() {
+    if (
+      productName == "" ||
+      productBrand == "" ||
+      productQuantity == "" ||
+      storageValue == ""
+    ) {
+      showToast(
+        "error",
+        t("components.general.error", t("components.addProduct.missingFields"))
+      );
+      return;
+    }
+
+    const newDoc = {
+      addedDate: new Date().getTime(),
+      barcode: productBarcode,
+      brand: productBrand,
+      consumed: false,
+      expirationDate: expirationDate.getTime(),
+      home: defaultHome,
+      name: productName,
+      quantity: parseInt(productQuantity),
+      storage: storageValue,
+    };
+
+    if (await addProduct(newDoc)) {
+      showToast(
+        "success",
+        t("components.general.success", t("components.addProduct.added"))
+      );
+      resetFields();
+    }
+  }
 
   return (
     <View style={styles.container}>
@@ -280,6 +334,7 @@ export default function AddProductScreenScreen({ route, navigation }) {
         </TouchableOpacity>
         <Button
           mode="contained-tonal"
+          onPress={handleAddProduct}
           style={styles.addProductButton}
           theme={{
             colors: {

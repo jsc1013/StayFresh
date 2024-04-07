@@ -3,6 +3,7 @@ import {
   collection,
   query,
   doc,
+  addDoc,
   getDocs,
   updateDoc,
   where,
@@ -107,4 +108,14 @@ export async function getAllProductsPeriod(homeId, fetchPeriod) {
   );
 
   return filteredArray;
+}
+
+export async function addProduct(doc) {
+  try {
+    await addDoc(collection(firestoreDB, "products"), doc);
+    return true;
+  } catch (e) {
+    console.log(e);
+    return false;
+  }
 }

@@ -10,17 +10,13 @@ import {
 import { myColors } from "../constants/Colors";
 import i18next from "../services/i18next";
 
-const defaultPreviewDate = 15 * 86400000 + new Date().getTime();
 const milisecondsInDay = 86400000;
 const rangeOne = 3;
 const rangeTwo = 7;
 const timeStamp = Date.now();
 
 // Gets the products from firebase in a range
-export const getUserProductsPreviewDate = async (
-  home,
-  previewDate = defaultPreviewDate
-) => {
+export const getUserProductsPreviewDate = async (home, previewDate) => {
   const productQuery = query(
     collection(firestoreDB, "products"),
     where("expirationDate", "<=", previewDate),

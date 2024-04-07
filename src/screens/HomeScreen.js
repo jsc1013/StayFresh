@@ -272,7 +272,7 @@ export default function HomeScreen({ route, navigation }) {
   // Callback function for dropdown input modal
   async function handleDropdownInputModal(value) {
     setDropdownInputModalVisible(false);
-    previewDate = parseInt(value) * 86400000 + new Date().getTime();
+    previewDate = parseInt(value) * milisecondsInDay + new Date().getTime();
     setLoadingModalVisible(true);
     tempUserHomes = [...userHomes];
     let home = tempUserHomes.find((userHome) => userHome.id == defaultHomeID);

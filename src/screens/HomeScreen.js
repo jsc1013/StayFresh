@@ -17,11 +17,19 @@ import { myColors } from "../constants/Colors";
 import SwipeComponent from "../components/SwipeComponent";
 import mockupProducts from "../mockup/products.json";
 import { getUserProductsPreviewDate } from "../services/productService";
+import { getUserData, createUserProfile } from "../services/userService";
 
 export default function HomeScreen({ route, navigation }) {
+  const [defaultHomeID, setDefaultHomeID] = useState("");
+  const [defaultHomeName, setDefaultHomeName] = useState("");
+  const [defaultHomePreviewDays, setDefaultHomePreviewDays] = useState(7);
+  const [defaultHomePreviewDate, setDefaultHomePreviewDate] = useState(0);
+
   const [products, setProducts] = useState([]);
 
   const { t } = useTranslation();
+
+  const milisecondsInDay = 86400000;
 
   // Sets the navigation options
   useEffect(function navigationOptions() {
@@ -55,15 +63,52 @@ export default function HomeScreen({ route, navigation }) {
     return () => backHandler.remove();
   }, []);
 
-  // getProducts effect
+  // Load user data effect
   useEffect(() => {
-    const getProducts = () => {
-      getUserProductsPreviewDate("KUE7By6t8KnByqScIkYY").then((prod) => {
-        setProducts(prod);
-      });
-    };
-    getProducts();
+    loadUserData();
   }, []);
+
+  // Retreives the user data from the service
+  async function loadUserData() {
+    userData = await getUserData(auth.currentUser.email);
+    if (userData) {
+      var searchDefault = userData.homes.find((home) => home.default == true);
+      if (searchDefault != undefined) {
+        let previewDate = setUserInitialData(searchDefault);
+        loadUserProducts(searchDefault.id, previewDate);
+      } else {
+        clearUserState();
+      }
+    } else {
+      created = await createUserProfile();
+    }
+  }
+
+  // Loads all products for a home
+  async function loadUserProducts(homeId) {
+    getUserProductsPreviewDate(homeId).then((prod) => {
+      setProducts(prod);
+    });
+  }
+
+  // Clears all user state variables
+  function clearUserState() {
+    setDefaultHomeID("");
+    setDefaultHomeName("");
+    setProducts([]);
+  }
+
+  // Establishes the user initial data into the state
+  function setUserInitialData(defaultHome) {
+    setDefaultHomeID(defaultHome.id);
+    setDefaultHomeName(defaultHome.name);
+    previewDate =
+      defaultHome.previewDays * milisecondsInDay + new Date().getTime();
+    setDefaultHomePreviewDays(defaultHome.previewDays);
+    setDefaultHomePreviewDate(previewDate);
+    loadUserProducts(defaultHome.id, previewDate);
+    return previewDate;
+  }
 
   // Manage logout
   const logoutAction = () => {

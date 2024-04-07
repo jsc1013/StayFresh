@@ -86,6 +86,7 @@ export default function HomeScreen({ route, navigation }) {
 
   // Loads all products for a home
   async function loadUserProducts(homeId) {
+    console.log("loading..");
     getUserProductsPreviewDate(homeId).then((prod) => {
       setProducts(prod);
     });
@@ -217,7 +218,7 @@ export default function HomeScreen({ route, navigation }) {
             <Text style={styles.nextToExpireText}>Proximos 15 días</Text>
           </TouchableOpacity>
         </View>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => loadUserProducts(defaultHomeID)}>
           <Image
             source={require("../assets/update.png")}
             style={styles.nextToExpireUpdateImage}

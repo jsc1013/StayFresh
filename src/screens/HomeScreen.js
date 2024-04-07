@@ -86,7 +86,6 @@ export default function HomeScreen({ route, navigation }) {
 
   // Loads all products for a home
   async function loadUserProducts(homeId) {
-    console.log("loading..");
     getUserProductsPreviewDate(homeId).then((prod) => {
       setProducts(prod);
     });
@@ -160,7 +159,7 @@ export default function HomeScreen({ route, navigation }) {
               style={styles.headerHomeManagementButton}
             />
           </TouchableOpacity>
-          <Text style={styles.headerHomeManagementText}>Home</Text>
+          <Text style={styles.headerHomeManagementText}>{defaultHomeName}</Text>
         </View>
         <View>
           <TouchableOpacity onPress={logoutAction}>

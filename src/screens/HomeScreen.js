@@ -7,6 +7,8 @@ import {
   Image,
   BackHandler,
   Alert,
+  Modal,
+  ActivityIndicator,
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { useTranslation } from "react-i18next";
@@ -25,6 +27,8 @@ export default function HomeScreen({ route, navigation }) {
   const [defaultHomePreviewDays, setDefaultHomePreviewDays] = useState(7);
   const [defaultHomePreviewDate, setDefaultHomePreviewDate] = useState(0);
 
+  const [loadingModalVisible, setLoadingModalVisible] = useState(true);
+
   const [products, setProducts] = useState([]);
 
   const { t } = useTranslation();
@@ -37,7 +41,7 @@ export default function HomeScreen({ route, navigation }) {
   }, []);
 
   // Sets the back options
-  useEffect(function backOptions() {
+  useLayoutEffect(function backOptions() {
     const backAction = () => {
       Alert.alert(
         t("components.home.exitAppHeader"),
@@ -64,9 +68,19 @@ export default function HomeScreen({ route, navigation }) {
   }, []);
 
   // Load user data effect
-  useEffect(() => {
+  useLayoutEffect(() => {
     loadUserData();
   }, []);
+
+  // Shows the loading modal
+  function showLoadingModal() {
+    setLoadingModalVisible(true);
+  }
+
+  // Clears the loading modal
+  function closeLoadingModal() {
+    setLoadingModalVisible(false);
+  }
 
   // Retreives the user data from the service
   async function loadUserData() {
@@ -88,6 +102,7 @@ export default function HomeScreen({ route, navigation }) {
   async function loadUserProducts(homeId) {
     getUserProductsPreviewDate(homeId).then((prod) => {
       setProducts(prod);
+      closeLoadingModal();
     });
   }
 
@@ -108,6 +123,12 @@ export default function HomeScreen({ route, navigation }) {
     setDefaultHomePreviewDate(previewDate);
     loadUserProducts(defaultHome.id, previewDate);
     return previewDate;
+  }
+
+  // Updates the user products on screen
+  function updateUserProducts() {
+    showLoadingModal(true);
+    loadUserProducts(defaultHomeID);
   }
 
   // Manage logout
@@ -149,6 +170,17 @@ export default function HomeScreen({ route, navigation }) {
   return (
     <View style={styles.container}>
       <StatusBar></StatusBar>
+
+      {/* LOADING MODAL */}
+      <Modal
+        style={styles.loadingModal}
+        transparent={true}
+        visible={loadingModalVisible}
+      >
+        <View style={styles.loadingModalBackground}>
+          <ActivityIndicator size="large"></ActivityIndicator>
+        </View>
+      </Modal>
 
       {/* HEADER */}
       <View style={styles.header}>
@@ -217,7 +249,7 @@ export default function HomeScreen({ route, navigation }) {
             <Text style={styles.nextToExpireText}>Proximos 15 días</Text>
           </TouchableOpacity>
         </View>
-        <TouchableOpacity onPress={() => loadUserProducts(defaultHomeID)}>
+        <TouchableOpacity onPress={() => updateUserProducts()}>
           <Image
             source={require("../assets/update.png")}
             style={styles.nextToExpireUpdateImage}
@@ -303,5 +335,10 @@ const styles = StyleSheet.create({
     height: 50,
     marginTop: 15,
     marginRight: 25,
+  },
+  loadingModalBackground: {
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    flex: 1,
+    justifyContent: "center",
   },
 });

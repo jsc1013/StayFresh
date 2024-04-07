@@ -26,10 +26,8 @@ const Header = ({ callBackFunction }) => {
 
 const styles = StyleSheet.create({
   header: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginTop: "2%",
-    paddingHorizontal: 20,
+    justifyContent: "flex-start",
+    marginLeft: "4%",
     marginBottom: 10,
   },
   backImage: {

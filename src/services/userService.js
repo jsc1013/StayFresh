@@ -21,10 +21,11 @@ export const createUserProfile = async (id) => {
   }
 };
 
-export const updateUserHomes = async (id, homes) => {
+export const updateUserHomes = async (id, updatedHomes) => {
   try {
-    updateDoc(doc(firestoreDB, "users", id), {
-      homes: homes,
+    console.log(id);
+    await updateDoc(doc(firestoreDB, "users", id), {
+      homes: updatedHomes,
     });
     return true;
   } catch (e) {

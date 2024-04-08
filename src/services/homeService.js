@@ -15,18 +15,6 @@ export const getHomeStorages = async (homeId) => {
   }
 };
 
-export async function updateHomes(userId, updatedHomes) {
-  try {
-    await updateDoc(doc(firestoreDB, "users", userId), {
-      homes: updatedHomes,
-    });
-    return true;
-  } catch (e) {
-    console.log(e);
-    return false;
-  }
-}
-
 export const deleteHome = async (homeId) => {
   try {
     await deleteDoc(doc(firestoreDB, "homes", homeId));
@@ -41,13 +29,14 @@ export const getHomeData = async (homeId) => {
   try {
     homeData = await getDoc(doc(firestoreDB, "homes", homeId));
     if (homeData.exists()) {
-      return homeData.data();
+      let data = await homeData.data();
+      return data;
     } else {
-      return {};
+      return undefined;
     }
   } catch (e) {
     console.log(e);
-    return {};
+    return undefined;
   }
 };
 
@@ -60,5 +49,19 @@ export const updateHomeUsers = async (homeId, updatedUsers) => {
   } catch (e) {
     console.log(e);
     return false;
+  }
+};
+
+export const checkHomeIdExists = async (homeId) => {
+  try {
+    let home = await getDoc(doc(firestoreDB, "homes", homeId));
+    if (home.exists()) {
+      return true;
+    } else {
+      return false;
+    }
+  } catch (e) {
+    console.log(e);
+    return e;
   }
 };

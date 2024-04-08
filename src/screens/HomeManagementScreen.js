@@ -25,11 +25,13 @@ import DropDownPicker from "react-native-dropdown-picker";
 import TextInputModal from "../components/TextInputModalComponent";
 
 import {
-  updateHomes,
   deleteHome,
   updateHomeUsers,
   getHomeData,
+  checkHomeIdExists,
 } from "../services/homeService";
+
+import { updateUserHomes } from "../services/userService";
 
 export default function HomeManagementScreen({ route, navigation }) {
   const layout = useWindowDimensions();
@@ -60,8 +62,24 @@ export default function HomeManagementScreen({ route, navigation }) {
     { key: "first", title: t("components.homeManagement.firstTabTitle") },
     { key: "second", title: t("components.homeManagement.secondTabTitle") },
   ]);
-
   const [userHomes, setUserHomes] = useState(route.params.userHomes);
+
+  function checkHomeExists(homeName) {
+    if (
+      (searchHome = userHomes.find(
+        (home) => home.name.toLowerCase() == homeName.toLowerCase()
+      ))
+    ) {
+      showToast(
+        "error",
+        t("general.error"),
+        t("components.homeManagement.repeatedHome")
+      );
+      return true;
+    } else {
+      return false;
+    }
+  }
 
   // My homes
   const FirstRoute = () => {
@@ -122,15 +140,7 @@ export default function HomeManagementScreen({ route, navigation }) {
 
     // Manages the confirmation of the modal
     function handleConfirmFirstRoute(inputText) {
-      searchHome = userHomes.find(
-        (home) => home.name.toLowerCase() == inputText.toLowerCase()
-      );
-      if (searchHome != undefined) {
-        showToast(
-          "error",
-          t("general.error"),
-          t("components.homeManagement.repeatedHome")
-        );
+      if (checkHomeExists(inputText)) {
         setModalFirstRouteVisible(false);
         return;
       }
@@ -161,7 +171,7 @@ export default function HomeManagementScreen({ route, navigation }) {
           : (home.default = false);
       });
 
-      if (updateHomes(auth.currentUser.email, tempHomes)) {
+      if (updateUserHomes(auth.currentUser.email, tempHomes)) {
         setUserHomes(tempHomes);
         setRefreshCombo(true);
         showToast(
@@ -255,15 +265,17 @@ export default function HomeManagementScreen({ route, navigation }) {
       var index = usersArray.indexOf(auth.currentUser.email);
       if (index !== -1) usersArray.splice(index, 1);
 
-      result = await updateHomeUsers(userHomeComboValue);
-      if (!result) return;
+      if (!updateHomeUsers(userHomeComboValue, usersArray)) {
+        return;
+      }
 
       userHomesFiltered = userHomes.filter(function (obj) {
         return obj.id !== userHomeComboValue;
       });
 
-      result = await updateHomes(auth.currentUser.email, userHomesFiltered);
-      if (!result) return;
+      if (!updateUserHomes(auth.currentUser.email, userHomesFiltered)) {
+        return;
+      }
 
       setUserHomes(userHomesFiltered);
       showToast(
@@ -368,7 +380,159 @@ export default function HomeManagementScreen({ route, navigation }) {
 
   // Add homes
   const SecondRoute = () => {
-    return <View></View>;
+    const [newHomeID, setNewHomeID] = useState("");
+    const [newHomeName, setNewHomeName] = useState("");
+    const [modalSecondRouteVisible, setModalSecondRouteVisible] =
+      useState(false);
+
+    // Camera
+    handleCameraRead = (data) => {
+      setNewHomeID(data);
+    };
+
+    const closeModalSecondRoute = () => {
+      setModalSecondRouteVisible(false);
+    };
+
+    const addExistingHome = (newHomeID) => {
+      if (newHomeID == "") {
+        showToast(
+          "error",
+          t("general.error"),
+          t("components.homeManagement.introduceHomeID")
+        );
+        return;
+      }
+      // Check if home has already been added
+      searchHome = userHomes.find(
+        (home) => home.id.toLowerCase() == newHomeID.toLowerCase()
+      );
+      if (searchHome != undefined) {
+        showToast(
+          "error",
+          t("general.error"),
+          t("components.homeManagement.homeAlreadyAdded")
+        );
+        return;
+      }
+      if (checkHomeIdExists(newHomeID)) {
+        setModalSecondRouteVisible(true);
+      } else {
+        showToast(
+          "error",
+          t("general.error"),
+          t("components.homeManagement.homeNotExist")
+        );
+        return;
+      }
+    };
+
+    // Manages the confirmation of the modal
+    const handleConfirmSecondRoute = async (inputText) => {
+      if (checkHomeExists(inputText)) {
+        setModalSecondRouteVisible(false);
+        return;
+      }
+      var newUserHomes = userHomes;
+      newUserHomes.push({
+        default: false,
+        id: newHomeID,
+        name: inputText,
+        previewDays: 7,
+      });
+
+      let homeData = await getHomeData(newHomeID);
+      if (homeData != undefined) {
+        newUsers = homeData.users;
+        newUsers.push(auth.currentUser.email);
+        if (updateHomeUsers(newHomeID, newUsers)) {
+          if (updateUserHomes(auth.currentUser.email, newUserHomes)) {
+            showToast(
+              "success",
+              t("general.success"),
+              t("components.homeManagement.newHomeAdded")
+            );
+            setUserHomes(newUserHomes);
+            setNewHomeID("");
+          }
+        }
+      }
+      setModalSecondRouteVisible(false);
+    };
+
+    return (
+      <View style={styles.secondRouteContainer}>
+        <TextInputModal
+          visible={modalSecondRouteVisible}
+          onConfirm={handleConfirmSecondRoute}
+          onCancel={closeModalSecondRoute}
+          placeholder={t("components.homeManagement.newHomeName")}
+        />
+        <Text style={styles.existingHomeText}>
+          {t("components.homeManagement.existingHome")}
+        </Text>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate("CameraScreen", {
+              parentFunction: handleCameraRead,
+            });
+          }}
+        >
+          <Image
+            source={require("../assets/qrCamera.png")}
+            style={styles.scanQR}
+          />
+        </TouchableOpacity>
+        <TextInput
+          style={styles.inputID}
+          label={t("components.homeManagement.newHomeID")}
+          onChangeText={(text) => {
+            setNewHomeID(text);
+          }}
+          value={newHomeID}
+          theme={{ colors: { primary: myColors.mainBlue } }}
+        />
+        <Button
+          mode="contained-tonal"
+          onPress={() => {
+            addExistingHome(newHomeID);
+          }}
+          style={styles.addExistingHomeButton}
+          theme={{
+            colors: {
+              secondaryContainer: myColors.mainGreen,
+              onSecondaryContainer: myColors.white,
+            },
+          }}
+        >
+          {t("components.homeManagement.addExistingHome")}
+        </Button>
+        <Divider style={styles.divider} />
+        <Text style={styles.newHomeText}>
+          {t("components.homeManagement.newHome")}
+        </Text>
+        <TextInput
+          style={styles.inputName}
+          label={t("components.homeManagement.newHomeName")}
+          value={newHomeName}
+          onChangeText={(text) => {}}
+          theme={{ colors: { primary: myColors.mainBlue } }}
+        />
+        <Button
+          mode="contained-tonal"
+          onPress={() => {}}
+          style={styles.addNewHomeButton}
+          theme={{
+            colors: {
+              secondaryContainer: myColors.mainGreen,
+              onSecondaryContainer: myColors.white,
+            },
+          }}
+        >
+          {t("components.homeManagement.addNewHome")}
+        </Button>
+      </View>
+    );
   };
 
   const renderScene = SceneMap({
@@ -463,5 +627,65 @@ styles = StyleSheet.create({
     marginTop: 30,
     position: "absolute",
     bottom: 20,
+  },
+  secondRouteContainer: {
+    flex: 1,
+    marginTop: 2,
+    paddingLeft: 10,
+    paddingRight: 10,
+    width: "100%",
+  },
+  existingHomeText: {
+    alignSelf: "flex-start",
+    fontSize: 20,
+    fontWeight: "bold",
+    marginTop: 10,
+  },
+  scanQR: {
+    height: 80,
+    width: 80,
+    alignSelf: "center",
+    marginTop: 20,
+    marginBottom: 20,
+  },
+  inputID: {
+    height: 55,
+    borderColor: "gray",
+    backgroundColor: "white",
+    borderWidth: 0.5,
+    width: "100%",
+  },
+  divider: {
+    width: "100%",
+    marginTop: 40,
+    borderWidth: 0.5,
+  },
+  newHomeText: {
+    alignSelf: "flex-start",
+    fontSize: 20,
+    fontWeight: "bold",
+    marginTop: 20,
+  },
+  addExistingHomeButton: {
+    width: "100%",
+    marginBottom: 10,
+    borderWidth: 1,
+    borderColor: "black",
+    marginTop: 30,
+  },
+  addNewHomeButton: {
+    width: "100%",
+    marginBottom: 10,
+    borderWidth: 1,
+    borderColor: "black",
+    marginTop: 30,
+  },
+  inputName: {
+    height: 55,
+    borderColor: "gray",
+    backgroundColor: "white",
+    borderWidth: 0.5,
+    width: "100%",
+    marginTop: 20,
   },
 });

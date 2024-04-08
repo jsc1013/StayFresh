@@ -10,6 +10,7 @@ import {
   ConsumeProductScreen,
   HomeManagementScreen,
   StorageScreen,
+  CameraScreen,
 } from "./src/screens";
 
 const Stack = createNativeStackNavigator();
@@ -37,6 +38,7 @@ export default function App() {
         <Stack.Screen name="LoginScreen" component={LoginScreen} />
         <Stack.Screen name="HomeScreen" component={HomeScreen} />
         <Stack.Screen name="AddProductScreen" component={AddProductScreen} />
+        <Stack.Screen name="CameraScreen" component={CameraScreen} />
         <Stack.Screen
           name="ConsumeProductScreen"
           component={ConsumeProductScreen}

@@ -38,7 +38,6 @@ const styles = StyleSheet.create({
     height: 32,
   },
   backImage: {
-    marginTop: 10,
     width: 32,
     height: 32,
   },

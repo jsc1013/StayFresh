@@ -6,6 +6,7 @@ import {
   LogBox,
   TouchableOpacity,
   ScrollView,
+  Keyboard,
 } from "react-native";
 import Header from "../components/HeaderComponent";
 import { TextInput, Button } from "react-native-paper";
@@ -23,6 +24,7 @@ export default function AddProductScreenScreen({ route, navigation }) {
   const defaultHome = route.params.defaultHome;
 
   const [allProductsPeriod, setAllProductsPeriod] = useState([]);
+  const [isKeyboardVisible, setKeyboardVisible] = useState(false);
 
   const days = 180;
   const fetchPeriod = new Date().getTime() - 1000 * 60 * 60 * 24 * days;
@@ -66,6 +68,26 @@ export default function AddProductScreenScreen({ route, navigation }) {
     navigation.addListener("beforeRemove", (e) => {
       route.params.parentFunction(defaultHome);
     });
+  }, []);
+
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener(
+      "keyboardDidShow",
+      () => {
+        setKeyboardVisible(true); // or some other action
+      }
+    );
+    const keyboardDidHideListener = Keyboard.addListener(
+      "keyboardDidHide",
+      () => {
+        setKeyboardVisible(false); // or some other action
+      }
+    );
+
+    return () => {
+      keyboardDidHideListener.remove();
+      keyboardDidShowListener.remove();
+    };
   }, []);
 
   // fetchProducts
@@ -204,19 +226,66 @@ export default function AddProductScreenScreen({ route, navigation }) {
     }
   }
 
+  handleCameraRead = (data) => {
+    console.log(data);
+    getProductByBarcode(data);
+  };
+
+  function getProductByBarcode(barcode) {
+    const productFound = allProductsPeriod.find(
+      (product) => product.barcode === barcode
+    );
+
+    if (productFound == undefined) {
+      showToast(
+        "error",
+        t(
+          "components.general.error",
+          t("components.addProduct.productNotFound")
+        )
+      );
+      setProductName("");
+      setProductBrand("");
+      setProductQuantity("");
+      setExpirationDate(new Date());
+      setProductBarcode(barcode);
+      return;
+    }
+
+    setProductName(productFound.name);
+
+    productBrand == undefined
+      ? setProductBrand("")
+      : setProductBrand(productFound.brand);
+
+    barcode == undefined
+      ? setProductBarcode("")
+      : setProductBarcode(productFound.barcode);
+  }
+
   return (
     <View style={styles.container}>
-      <Header
-        callBackFunction={() => {
-          navigation.goBack();
-        }}
-      />
+      {!isKeyboardVisible && (
+        <Header
+          callBackFunction={() => {
+            navigation.goBack();
+          }}
+        />
+      )}
       <ScrollView contentContainerStyle={styles.body}>
-        <TouchableOpacity>
-          <Image
-            source={require("../assets/barcodeCameraAdd.png")}
-            style={styles.scanImage}
-          />
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate("CameraScreen", {
+              parentFunction: handleCameraRead,
+            });
+          }}
+        >
+          {!isKeyboardVisible && (
+            <Image
+              source={require("../assets/barcodeCameraAdd.png")}
+              style={styles.scanImage}
+            />
+          )}
         </TouchableOpacity>
 
         {/* SEARCH */}

@@ -4,3 +4,4 @@ export { default as AddProductScreen } from "./AddProductScreen";
 export { default as ConsumeProductScreen } from "./ConsumeProductScreen";
 export { default as HomeManagementScreen } from "./HomeManagementScreen";
 export { default as StorageScreen } from "./StorageScreen";
+export { default as CameraScreen } from "./CameraScreen";

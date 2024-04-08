@@ -17,7 +17,7 @@ const rangeTwo = 7;
 const timeStamp = Date.now();
 
 // Gets the products from firebase in a range
-export const getUserProductsPreviewDate = async (home, previewDate) => {
+export async function getUserProductsPreviewDate(home, previewDate) {
   const productQuery = query(
     collection(firestoreDB, "products"),
     where("expirationDate", "<=", previewDate),
@@ -38,7 +38,7 @@ export const getUserProductsPreviewDate = async (home, previewDate) => {
     (firstItem, secondItem) => firstItem.expiracy - secondItem.expiracy
   );
   return products;
-};
+}
 
 function calculateProductProperties(product) {
   product.remainingTime = Math.round(

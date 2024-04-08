@@ -52,6 +52,35 @@
       },
       "modal":{
          "units":"Introduce new units"
+      },
+      "homeManagement": {
+         "firstTabTitle":"My homes",
+         "secondTabTitle":"Add homes",
+         "newHomeID": "Type or scan a new home ID",
+         "existingHome": "Existing home",
+         "newHome": "New home",
+         "addExistingHome": "Add existing home",
+         "newHomeName": "Introduce a new name",
+         "addNewHome": "Add new home",
+         "introduceHomeName": "Please introduce a home name",
+         "introduceHomeID": "Please introduce a home ID",
+         "repeatedHome": "Home name already exists",
+         "newHomeAdded": "New home was added",
+         "homeAlreadyAdded": "Home already added",
+         "homeNotExist": "The specified home doesn't exist",
+         "selectHome": "Select a home",
+         "editHomeName": "Edit name",
+         "establishDefault": "Establish default",
+         "leaveHome": "Leave home",
+         "copiedClipboard": "ID Copied to clipboard",
+         "errorLeavingHome": "Error leaving selected home",
+         "deleteHomeTitle": "Delete home",
+         "deleteHomeText": "No more users in current home, it will be deleted",
+         "leaveHomeTitle": "Leave home",
+         "leaveHomeText": "Leave selected home?",
+         "leftHome": "Left home",
+         "defaultSet": "Default home was set",
+         "homeNameUpdated": "Home name updated"
       }
    },
    "general":{

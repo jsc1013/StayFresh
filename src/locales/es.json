@@ -33,9 +33,6 @@
          "productConsumed":"Producto consumido",
          "productNotConsumed":"Error al consumir producto"
       },
-      "modal":{
-         "units":"Introduzca nuevas unidades"
-      },
       "addProduct":{
          "title":"Añadir producto",
          "searchText":"Buscar...",
@@ -52,6 +49,38 @@
          "barcode":"Código de barras",
          "scan":"Escanear código de barras",
          "productNotFound":"Producto no encontrado, añádalo"
+      },
+      "modal":{
+         "units":"Introduzca nuevas unidades"
+      },
+      "homeManagement": {
+         "firstTabTitle":"Mis hogares",
+         "secondTabTitle":"Añadir hogares",
+         "newHomeID": "Escriba o escanee un ID",
+         "existingHome": "Hogar existente",
+         "newHome": "Nuevo hogar",
+         "addExistingHome": "Añadir hogar existente",
+         "newHomeName": "Introduzca un nombre",
+         "addNewHome": "Añadir nuevo hogar",
+         "introduceHomeName": "Por favor, introduzca un nombre",
+         "introduceHomeID": "Por favor, introduzca un ID",
+         "repeatedHome": "Ya existe un hogar con el mismo nombre",
+         "newHomeAdded": "El nuevo hogar se añadió",
+         "homeAlreadyAdded": "El hogar ya está añadido",
+         "homeNotExist": "El hogar indicado no existe",
+         "selectHome": "Seleccionar hogar",
+         "editHomeName": "Editar nombre",
+         "establishDefault": "Establecer por defecto",
+         "leaveHome": "Salir del hogar",
+         "copiedClipboard": "ID copiado al portapapeles",
+         "errorLeavingHome": "No se ha podido salir del hogar",
+         "deleteHomeTitle": "Borrar hogar",
+         "deleteHomeText": "No hay más usuarios en el hogar, se borrará",
+         "leaveHomeTitle": "Salir del hogar",
+         "leaveHomeText": "¿Quiere salir del hogar seleccionado?",
+         "leftHome": "Salió del hogar",
+         "defaultSet": "Hogar por defecto establecido",
+         "homeNameUpdated": "Nombre actualizado"
       }
    },
    "general":{

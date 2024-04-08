@@ -112,12 +112,16 @@ export default function AddProductScreenScreen({ route, navigation }) {
             }
 
             if (product.barcode == undefined) {
-              product.brand = "";
+              product.barcode = "";
             }
             tempItems.push({
               label:
-                product.name + " - " + product.brand + " - " + product.barcode,
+                product.name + ": " + product.barcode + "\n" + product.brand,
               value: product.id,
+              containerStyle: {
+                borderWidth: 0.3,
+                height: 50,
+              },
             });
           }
         });
@@ -214,6 +218,8 @@ export default function AddProductScreenScreen({ route, navigation }) {
             style={styles.scanImage}
           />
         </TouchableOpacity>
+
+        {/* SEARCH */}
         <DropDownPicker
           open={openSearch}
           value={searchedText}
@@ -245,6 +251,7 @@ export default function AddProductScreenScreen({ route, navigation }) {
           }}
         />
 
+        {/* BARCODE */}
         <TextInput
           style={styles.input}
           label={t("components.addProduct.barcode")}
@@ -255,6 +262,8 @@ export default function AddProductScreenScreen({ route, navigation }) {
           keyboardType="numeric"
           theme={{ colors: { primary: myColors.mainBlue } }}
         />
+
+        {/* NAME */}
         <TextInput
           style={styles.input}
           label={t("components.addProduct.productName")}
@@ -264,6 +273,8 @@ export default function AddProductScreenScreen({ route, navigation }) {
           value={productName}
           theme={{ colors: { primary: myColors.mainBlue } }}
         />
+
+        {/* BRAND */}
         <TextInput
           style={styles.input}
           label={t("components.addProduct.productBrand")}
@@ -273,6 +284,8 @@ export default function AddProductScreenScreen({ route, navigation }) {
           value={productBrand}
           theme={{ colors: { primary: myColors.mainBlue } }}
         />
+
+        {/* QUANTITY*/}
         <TextInput
           style={styles.input}
           label={t("components.addProduct.productQuantity")}

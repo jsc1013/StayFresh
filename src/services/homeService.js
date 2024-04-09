@@ -1,7 +1,15 @@
 import { firestoreDB } from "../config/firebase-config";
-import { doc, getDoc, setDoc, updateDoc, deleteDoc } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  getDoc,
+  addDoc,
+  setDoc,
+  updateDoc,
+  deleteDoc,
+} from "firebase/firestore";
 
-export const getHomeStorages = async (homeId) => {
+export async function getHomeStorages(homeId) {
   try {
     let homeData = await getDoc(doc(firestoreDB, "homes", homeId));
     if (homeData.exists()) {
@@ -13,9 +21,9 @@ export const getHomeStorages = async (homeId) => {
     console.log(e);
     return [];
   }
-};
+}
 
-export const deleteHome = async (homeId) => {
+export async function deleteHome(homeId) {
   try {
     await deleteDoc(doc(firestoreDB, "homes", homeId));
     return true;
@@ -23,9 +31,9 @@ export const deleteHome = async (homeId) => {
     console.log(e);
     return false;
   }
-};
+}
 
-export const getHomeData = async (homeId) => {
+export async function getHomeData(homeId) {
   try {
     homeData = await getDoc(doc(firestoreDB, "homes", homeId));
     if (homeData.exists()) {
@@ -38,9 +46,9 @@ export const getHomeData = async (homeId) => {
     console.log(e);
     return undefined;
   }
-};
+}
 
-export const updateHomeUsers = async (homeId, updatedUsers) => {
+export async function updateHomeUsers(homeId, updatedUsers) {
   try {
     await update(doc(firestoreDB, "homes", homeId), {
       users: updatedUsers,
@@ -50,9 +58,9 @@ export const updateHomeUsers = async (homeId, updatedUsers) => {
     console.log(e);
     return false;
   }
-};
+}
 
-export const checkHomeIdExists = async (homeId) => {
+export async function checkHomeIdExists(homeId) {
   try {
     let home = await getDoc(doc(firestoreDB, "homes", homeId));
     if (home.exists()) {
@@ -64,4 +72,14 @@ export const checkHomeIdExists = async (homeId) => {
     console.log(e);
     return e;
   }
-};
+}
+
+export async function addNewHome(newHome) {
+  try {
+    const insertedDoc = await addDoc(collection(firestoreDB, "homes"), newHome);
+    return insertedDoc.id;
+  } catch (e) {
+    console.log(e);
+    return undefined;
+  }
+}

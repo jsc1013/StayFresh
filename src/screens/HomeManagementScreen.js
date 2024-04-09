@@ -29,6 +29,7 @@ import {
   updateHomeUsers,
   getHomeData,
   checkHomeIdExists,
+  addNewHome,
 } from "../services/homeService";
 
 import { updateUserHomes } from "../services/userService";
@@ -64,7 +65,7 @@ export default function HomeManagementScreen({ route, navigation }) {
   ]);
   const [userHomes, setUserHomes] = useState(route.params.userHomes);
 
-  function checkHomeExists(homeName) {
+  function checkHomeNameExists(homeName) {
     if (
       (searchHome = userHomes.find(
         (home) => home.name.toLowerCase() == homeName.toLowerCase()
@@ -140,7 +141,7 @@ export default function HomeManagementScreen({ route, navigation }) {
 
     // Manages the confirmation of the modal
     function handleConfirmFirstRoute(inputText) {
-      if (checkHomeExists(inputText)) {
+      if (checkHomeNameExists(inputText)) {
         setModalFirstRouteVisible(false);
         return;
       }
@@ -232,7 +233,7 @@ export default function HomeManagementScreen({ route, navigation }) {
       userHomesFiltered = userHomes.filter(function (obj) {
         return obj.id !== userHomeComboValue;
       });
-      await updateHomes(auth.currentUser.email, userHomesFiltered);
+      await updateUserHomes(auth.currentUser.email, userHomesFiltered);
       setUserHomes(userHomesFiltered);
       showToast(
         "success",
@@ -429,7 +430,7 @@ export default function HomeManagementScreen({ route, navigation }) {
 
     // Manages the confirmation of the modal
     const handleConfirmSecondRoute = async (inputText) => {
-      if (checkHomeExists(inputText)) {
+      if (checkHomeNameExists(inputText)) {
         setModalSecondRouteVisible(false);
         return;
       }
@@ -459,6 +460,38 @@ export default function HomeManagementScreen({ route, navigation }) {
       }
       setModalSecondRouteVisible(false);
     };
+
+    async function createNewHome(newHomeName) {
+      if (checkHomeNameExists(newHomeName)) {
+        return;
+      }
+      const newHome = {
+        addedDate: new Date().getTime(),
+        storage: [],
+        users: [auth.currentUser.email],
+      };
+
+      let homeDocid = await addNewHome(newHome);
+      console.log(homeDocid);
+      var tempUserHomes = [...userHomes];
+
+      tempUserHomes.push({
+        default: false,
+        id: homeDocid,
+        name: newHomeName,
+        previewDays: 7,
+      });
+
+      if (await updateUserHomes(auth.currentUser.email, tempUserHomes)) {
+        setUserHomes(tempUserHomes);
+        showToast(
+          "success",
+          t("general.success"),
+          t("components.homeManagement.newHomeAdded")
+        );
+        setNewHomeName("");
+      }
+    }
 
     return (
       <View style={styles.secondRouteContainer}>
@@ -515,12 +548,16 @@ export default function HomeManagementScreen({ route, navigation }) {
           style={styles.inputName}
           label={t("components.homeManagement.newHomeName")}
           value={newHomeName}
-          onChangeText={(text) => {}}
+          onChangeText={(text) => {
+            setNewHomeName(text);
+          }}
           theme={{ colors: { primary: myColors.mainBlue } }}
         />
         <Button
           mode="contained-tonal"
-          onPress={() => {}}
+          onPress={() => {
+            createNewHome(newHomeName);
+          }}
           style={styles.addNewHomeButton}
           theme={{
             colors: {

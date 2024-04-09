@@ -23,7 +23,6 @@ export const createUserProfile = async (id) => {
 
 export const updateUserHomes = async (id, updatedHomes) => {
   try {
-    console.log(id);
     await updateDoc(doc(firestoreDB, "users", id), {
       homes: updatedHomes,
     });

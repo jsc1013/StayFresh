@@ -81,6 +81,23 @@
          "leftHome": "Left home",
          "defaultSet": "Default home was set",
          "homeNameUpdated": "Home name updated"
+      },
+      "consumeProduct": {
+         "title":"Consume product",
+         "searchText":"Search...",
+         "search": "Search by name, brand or barcode...",
+         "searchNothing": "Nothing to show",
+         "productName":"Product name",
+         "productBrand":"Product brand",
+         "storage":"Storage",
+         "productQuantity":"Quantity",
+         "productExpirationDate":"Expiration Date",
+         "consumeProductButton":"Consume product",
+         "missingFields": "No product selected",
+         "consumed": "Product was consumed",
+         "barcode": "Barcode",
+         "scan": "Scan barcode",
+         "wrongInput": "New units must be less than current units"
       }
    },
    "general":{

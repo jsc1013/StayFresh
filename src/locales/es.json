@@ -81,6 +81,23 @@
          "leftHome": "Salió del hogar",
          "defaultSet": "Hogar por defecto establecido",
          "homeNameUpdated": "Nombre actualizado"
+      },
+      "consumeProduct": {
+         "title":"Consumir producto",
+         "searchText":"Buscar...",
+         "search": "Buscar por nombre, marca o código de barras...",
+         "searchNothing": "Nada que mostrar",
+         "productName":"Nombre del producto",
+         "productBrand":"Marca",
+         "storage":"Ubicación",
+         "productQuantity":"Cantidad",
+         "productExpirationDate":"Fecha caducidad",
+         "consumeProductButton":"Consumir producto",
+         "missingFields": "Debe seleccionar un producto",
+         "consumed": "Producto consumido",
+         "barcode": "Barcode",
+         "scan": "Escanear código de barras",
+         "wrongInput": "El valor debe ser menor al actual"
       }
    },
    "general":{

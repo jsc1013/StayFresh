@@ -119,3 +119,20 @@ export async function addProduct(doc) {
     return false;
   }
 }
+
+export async function getAllNotConsumed(home) {
+  const productQuery = query(
+    collection(firestoreDB, "products"),
+    where("home", "==", home),
+    where("consumed", "==", false)
+  );
+
+  docs = await getDocs(productQuery);
+  let products = [];
+  docs.forEach((docProduct) => {
+    let product = docProduct.data();
+    product.id = docProduct.id;
+    products.push(product);
+  });
+  return products;
+}

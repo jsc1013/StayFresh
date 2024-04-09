@@ -98,6 +98,24 @@
          "barcode": "Barcode",
          "scan": "Scan barcode",
          "wrongInput": "New units must be less than current units"
+      },
+      "storage": {
+         "alphabetic": "Alphabetic",
+         "date": "Date",
+         "storageExists": "Storage already exists",
+         "addedStorage":"Storage was added",
+         "buttonDelete": "Delete",
+         "buttonRename": "Rename",
+         "buttonDate": "Date",
+         "buttonMove": "Move",
+         "buttonQuantity": "Quantity",
+         "deleted": "Selection was deleted",
+         "askDeleteHeader": "Delete item",
+         "askDeleteMessage": "Delete the selected items?",
+         "updated": "Product update",
+         "newStorageName": "Input a new storage name",
+         "selectStorage": "Select storage",
+         "moved": "Items moved"
       }
    },
    "general":{

@@ -98,6 +98,24 @@
          "barcode": "Barcode",
          "scan": "Escanear código de barras",
          "wrongInput": "El valor debe ser menor al actual"
+      },
+      "storage": {
+         "alphabetic": "Alfabético",
+         "date": "Fecha",
+         "storageExists": "Ya existe un contenedor con el mismo nombre",
+         "addedStorage":"Contenedor añadido",
+         "buttonDelete": "Eliminar",
+         "buttonRename": "Renombrar",
+         "buttonDate": "Fecha",
+         "buttonMove": "Mover",
+         "buttonQuantity": "Cantidad",
+         "deleted": "La selección fue eliminada",   
+         "askDeleteHeader": "Borrar elementos",
+         "askDeleteMessage": "¿Desea borrar los elementos seleccionados?",
+         "updated": "Producto actualizado",
+         "newStorageName": "Nombre para el nuevo contenedor",
+         "selectStorage": "Seleccionar contenedor",
+         "moved": "Elementos movidos"
       }
    },
    "general":{

@@ -7,6 +7,7 @@ import {
   getDocs,
   updateDoc,
   where,
+  writeBatch,
 } from "firebase/firestore";
 import { myColors } from "../constants/Colors";
 import i18next from "../services/i18next";
@@ -135,4 +136,31 @@ export async function getAllNotConsumed(home) {
     products.push(product);
   });
   return products;
+}
+
+export async function moveProducts(products, storageName) {
+  try {
+    const batch = writeBatch(firestoreDB);
+    products.forEach((item) => {
+      const pRef = doc(firestoreDB, "products", item.key);
+      batch.update(pRef, { storage: storageName });
+    });
+    await batch.commit();
+    return true;
+  } catch (e) {
+    console.log(e);
+    return false;
+  }
+}
+
+export async function updateProductDate(productId, date) {
+  try {
+    await updateDoc(doc(firestoreDB, "products", productId), {
+      expirationDate: parseInt(date),
+    });
+    return true;
+  } catch (e) {
+    console.log(e);
+    return false;
+  }
 }

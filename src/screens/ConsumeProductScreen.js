@@ -411,7 +411,6 @@ const styles = StyleSheet.create({
     height: 55,
     borderColor: "gray",
     backgroundColor: "white",
-    borderWidth: 0.5,
     width: "100%",
   },
   inputDate: {

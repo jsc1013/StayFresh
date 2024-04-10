@@ -9,7 +9,7 @@ import {
   TouchableOpacity,
   ScrollView,
 } from "react-native";
-import { Checkbox, Divider, Searchbar } from "react-native-paper";
+import { Checkbox, Searchbar } from "react-native-paper";
 import Toast from "react-native-toast-message";
 import NestedListView from "react-native-nested-listview";
 import { DateTimePickerAndroid } from "@react-native-community/datetimepicker";
@@ -58,7 +58,7 @@ export default function StorageScreen({ route, navigation }) {
   const [modalInputStorageVisible, setModalInputStorageVisible] =
     useState(false);
 
-  const [loadingModalVisible, setLoadingModalVisible] = useState(false);
+  const [loadingModalVisible, setLoadingModalVisible] = useState(true);
 
   const [numberInputModalVisible, setNumberInputModalVisible] = useState(false);
 
@@ -128,13 +128,15 @@ export default function StorageScreen({ route, navigation }) {
     setItemsSelected(false);
     setStoragesSelected(false);
 
-    let tempProductsArray = await getAllNotConsumed(defaultHome);
-    setAllProductsNotConsumed(tempProductsArray);
-
-    let tempStorages = await getStorages(defaultHome);
-    setStorages(tempStorages);
-    arrangeDataTree(tempStorages, tempProductsArray, toggleValue);
-    setLoadingModalVisible(false);
+    Promise.all([
+      getAllNotConsumed(defaultHome),
+      getStorages(defaultHome),
+    ]).then(([tempProductsArray, tempStorages]) => {
+      setAllProductsNotConsumed(tempProductsArray);
+      setStorages(tempStorages);
+      arrangeDataTree(tempStorages, tempProductsArray, toggleValue);
+      setLoadingModalVisible(false);
+    });
   }
 
   // getAllNotConsumedAndStorages
@@ -440,8 +442,8 @@ export default function StorageScreen({ route, navigation }) {
     setNumberInputModalVisible(false);
     await updateProductQuantity(selectedItems[0].key, parseInt(inputNumber));
     setLoadingModalVisible(true);
-    await getAllNotConsumedAndStorages();
     showToast("success", t("general.success"), t("components.storage.updated"));
+    await getAllNotConsumedAndStorages();
   }
 
   function showMode(currentMode) {

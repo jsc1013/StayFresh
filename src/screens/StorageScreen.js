@@ -425,8 +425,14 @@ export default function StorageScreen({ route, navigation }) {
 
   async function moveSelectedElements(value) {
     setLoadingModalVisible(true);
-    await moveProducts(selectedItems, value);
-    await getAllNotConsumedAndStorages();
+    moveProducts(selectedItems, value);
+    let tempProducts = [...allProductsNotConsumed];
+    selectedItems.forEach((item) => {
+      let product = tempProducts.find((s) => s.id == item.key);
+      product.storage = value;
+    });
+    await arrangeDataTree(storages, tempProducts, toggleValue);
+    setLoadingModalVisible(false);
     showToast("success", t("general.success"), t("components.storage.moved"));
   }
 
@@ -440,10 +446,15 @@ export default function StorageScreen({ route, navigation }) {
 
   async function updateProductQty(inputNumber) {
     setNumberInputModalVisible(false);
-    await updateProductQuantity(selectedItems[0].key, parseInt(inputNumber));
+    updateProductQuantity(selectedItems[0].key, parseInt(inputNumber));
+    let productKey = checkedDic[selectedItems[0].key].key;
     setLoadingModalVisible(true);
+    tempProducts = [...allProductsNotConsumed];
+    var product = tempProducts.find((s) => s.id == productKey);
+    product.quantity = parseInt(inputNumber);
     showToast("success", t("general.success"), t("components.storage.updated"));
-    await getAllNotConsumedAndStorages();
+    await arrangeDataTree(storages, tempProducts, toggleValue);
+    setLoadingModalVisible(false);
   }
 
   function showMode(currentMode) {

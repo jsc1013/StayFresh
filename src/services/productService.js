@@ -65,7 +65,7 @@ function calculateProductProperties(product) {
 
 export async function updateProductQuantity(productId, quantity) {
   try {
-    await updateDoc(doc(firestoreDB, "products", productId), {
+    updateDoc(doc(firestoreDB, "products", productId), {
       quantity: parseInt(quantity),
     });
     return true;
@@ -145,7 +145,7 @@ export async function moveProducts(products, storageName) {
       const pRef = doc(firestoreDB, "products", item.key);
       batch.update(pRef, { storage: storageName });
     });
-    await batch.commit();
+    batch.commit();
     return true;
   } catch (e) {
     console.log(e);

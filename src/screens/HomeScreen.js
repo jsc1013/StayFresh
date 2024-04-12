@@ -247,21 +247,16 @@ export default function HomeScreen({ route, navigation }) {
   // Calls to consume product
   async function confirmConsumeProduct(productid) {
     showLoadingModal();
-    if (await consumeProduct(productid)) {
-      updateUserProducts();
-      showToast(
-        "success",
-        t("general.success"),
-        t("components.home.productConsumed")
-      );
-    } else {
-      showToast(
-        "error",
-        t("general.error"),
-        t("components.home.productNotConsumed")
-      );
-      closeLoadingModal();
-    }
+    consumeProduct(productid);
+    let productsTemp = [...products];
+    productsTemp = productsTemp.filter((obj) => obj.id !== productid);
+    setProducts(productsTemp);
+    closeLoadingModal();
+    showToast(
+      "success",
+      t("general.success"),
+      t("components.home.productConsumed")
+    );
   }
 
   // Callback function for dropdown input modal

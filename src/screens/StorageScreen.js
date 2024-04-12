@@ -898,6 +898,7 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   nestedListContainer: {
+    flex: 1,
     marginTop: "10%",
     width: "100%",
   },

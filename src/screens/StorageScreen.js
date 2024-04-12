@@ -8,6 +8,7 @@ import {
   ActivityIndicator,
   TouchableOpacity,
   ScrollView,
+  Alert,
 } from "react-native";
 import { Checkbox, Searchbar } from "react-native-paper";
 import Toast from "react-native-toast-message";
@@ -31,6 +32,7 @@ import {
   moveProducts,
   updateProductQuantity,
   updatProductDate,
+  consumeProducts,
 } from "../services/productService";
 
 export default function StorageScreen({ route, navigation }) {
@@ -96,7 +98,8 @@ export default function StorageScreen({ route, navigation }) {
   // Manages the confirmation of the modal
   async function handleConfirmStorage(inputText) {
     if (
-      storages.some((item) => item.toLowerCase() == inputText.toLowerCase())
+      storages.find((item) => item.toLowerCase() == inputText.toLowerCase()) !=
+      undefined
     ) {
       showToast(
         "error",
@@ -104,19 +107,19 @@ export default function StorageScreen({ route, navigation }) {
         t("components.storage.storageExists")
       );
       setModalInputStorageVisible(false);
+      return;
     }
     tempStorages = storages;
     tempStorages.push(inputText);
-    if (await updateStorages(defaultHome, tempStorages)) {
-      setStorages(tempStorages);
-      setModalInputStorageVisible(false);
-      await getAllNotConsumedAndStorages();
-      showToast(
-        "success",
-        t("general.success"),
-        t("components.storage.addedStorage")
-      );
-    }
+    updateStorages(defaultHome, tempStorages);
+    setStorages(tempStorages);
+    setModalInputStorageVisible(false);
+    arrangeDataTree(storages, allProductsNotConsumed, toggleValue);
+    showToast(
+      "success",
+      t("general.success"),
+      t("components.storage.addedStorage")
+    );
   }
 
   // Gets all the unconsumed products
@@ -414,6 +417,54 @@ export default function StorageScreen({ route, navigation }) {
     );
   }
 
+  const deleteSelectedElements = async () => {
+    if (storagesSelected) {
+      storagesTemp = [...storages];
+      tempProducts = [...allProductsNotConsumed];
+      selectedItems.forEach((element) => {
+        storagesTemp = storagesTemp.filter(function (storage) {
+          return storage !== element.name;
+        });
+
+        var productsToUpdate = allProductsNotConsumed.filter(function (
+          product
+        ) {
+          return product.storage == element.name;
+        });
+
+        tempProducts = tempProducts.filter(
+          (prod) => !productsToUpdate.some((del) => del.id == prod.id)
+        );
+
+        consumeProducts(productsToUpdate);
+      });
+
+      updateStorages(defaultHome, storagesTemp);
+      arrangeDataTree(storagesTemp, tempProducts, toggleValue);
+      showToast(
+        "success",
+        t("general.success"),
+        t("components.storage.deleted")
+      );
+    } else {
+      selectedItems.forEach((prod) => {
+        prod.id = prod.key;
+      });
+      console.log(selectedItems);
+      consumeProducts(selectedItems);
+      let tempProducts = [...allProductsNotConsumed];
+      tempProducts = tempProducts.filter(
+        (prod) => !selectedItems.some((del) => del.id == prod.id)
+      );
+      showToast(
+        "success",
+        t("general.success"),
+        t("components.storage.deleted")
+      );
+      await arrangeDataTree(storages, tempProducts, toggleValue);
+    }
+  };
+
   async function handleCancelDropdownInputModal() {
     setDropdownInputModalVisible(false);
   }
@@ -659,6 +710,7 @@ export default function StorageScreen({ route, navigation }) {
         visible={numberInputModalVisible}
         onCancel={handleCancelNumberInputModal}
         onConfirm={handleNumberInputModal}
+        placeholder={t("components.modal.units")}
       />
       <DropdownInputModal
         visible={dropdownInputModalVisible}

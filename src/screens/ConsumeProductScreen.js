@@ -86,8 +86,13 @@ export default function ConsumeProductScreen({ route, navigation }) {
       return;
     }
 
+    let product = allProductsNotConsumed.find((prod) => prod.id == productID);
+    let productQuantity = product.quantity;
+    let finalQuantity = product.quantity - parseInt(inputNumber);
+
+    //productID
     closeModal();
-    if (inputNumber == 0) {
+    if (finalQuantity <= 0) {
       if (consumeProduct(productID)) {
         let newArray = allProductsNotConsumed.filter(function (o) {
           return o.id !== productID;
@@ -95,7 +100,7 @@ export default function ConsumeProductScreen({ route, navigation }) {
         setAllProductsNotConsumed(newArray);
       }
     } else {
-      if (updateProductQuantity(productID, inputNumber)) {
+      if (updateProductQuantity(productID, finalQuantity)) {
         let newArray = allProductsNotConsumed.map(function (o) {
           if (o.id == productID) {
             return { ...o, quantity: parseInt(inputNumber) };
@@ -246,6 +251,7 @@ export default function ConsumeProductScreen({ route, navigation }) {
           visible={modalVisible}
           onCancel={closeModal}
           onConfirm={handleConfirm}
+          placeholder={t("components.modal.consumedUnits")}
         />
         {
           <TouchableOpacity

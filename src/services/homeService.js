@@ -1,13 +1,5 @@
 import { firestoreDB } from "../config/firebase-config";
-import {
-  collection,
-  doc,
-  getDoc,
-  addDoc,
-  setDoc,
-  updateDoc,
-  deleteDoc,
-} from "firebase/firestore";
+import { collection, doc, getDoc, addDoc, deleteDoc } from "firebase/firestore";
 
 export async function getHomeStorages(homeId) {
   try {

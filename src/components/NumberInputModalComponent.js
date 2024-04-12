@@ -5,7 +5,7 @@ import { myColors } from "../constants/Colors";
 import { useTranslation } from "react-i18next";
 import { i18next } from "../services/i18next";
 
-const NumberInputModal = ({ visible, onCancel, onConfirm }) => {
+const NumberInputModal = ({ visible, onCancel, onConfirm, placeholder }) => {
   const [number, setNumber] = useState("");
   const { t } = useTranslation();
 
@@ -20,7 +20,7 @@ const NumberInputModal = ({ visible, onCancel, onConfirm }) => {
         <View style={styles.inputArea}>
           <TextInput
             keyboardType="numeric"
-            placeholder={t("components.modal.units")}
+            placeholder={placeholder}
             value={number}
             onChangeText={setNumber}
             style={styles.input}

@@ -51,7 +51,8 @@
          "productNotFound":"Product not found, you will need to add it manually"
       },
       "modal":{
-         "units":"Introduce new units"
+         "units":"New units",
+         "consumedUnits":"Consumed units"
       },
       "homeManagement": {
          "firstTabTitle":"My homes",

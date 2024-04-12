@@ -51,7 +51,8 @@
          "productNotFound":"Producto no encontrado, añádalo"
       },
       "modal":{
-         "units":"Introduzca nuevas unidades"
+         "units":"Nuevas unidades",
+         "consumedUnits":"Unidades consumidas"
       },
       "homeManagement": {
          "firstTabTitle":"Mis hogares",

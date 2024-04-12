@@ -302,6 +302,7 @@ export default function HomeScreen({ route, navigation }) {
           setEditProductModalVisible(false);
         }}
         onConfirm={handleModalConfirmEdit}
+        placeholder={t("components.modal.units")}
       />
 
       {/* DROPDOWN MODAL */}

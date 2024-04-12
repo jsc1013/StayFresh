@@ -153,6 +153,19 @@ export async function moveProducts(products, storageName) {
   }
 }
 
+export async function consumeProducts(products) {
+  try {
+    const batch = writeBatch(firestoreDB);
+    products.forEach((prod) => {
+      const pRef = doc(firestoreDB, "products", prod.id);
+      batch.update(pRef, { consumed: true });
+    });
+    batch.commit();
+  } catch (e) {
+    console.log(e);
+  }
+}
+
 export async function updateProductDate(productId, date) {
   try {
     await updateDoc(doc(firestoreDB, "products", productId), {

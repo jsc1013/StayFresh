@@ -30,7 +30,11 @@ export default function LoginScreen({}) {
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         sendEmailVerification(auth.currentUser).then(() => {
-          console.log("email sent");
+          showToast(
+            "success",
+            t("general.success"),
+            t("components.login.emailSent")
+          );
         });
       })
       .catch((error) => {

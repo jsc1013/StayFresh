@@ -29,6 +29,7 @@ import {
   createUserProfile,
   updateUserHomes,
 } from "../services/userService";
+import { signOut } from "firebase/auth";
 import NumberInputModal from "../components/NumberInputModalComponent";
 
 export default function HomeScreen({ route, navigation }) {
@@ -124,8 +125,9 @@ export default function HomeScreen({ route, navigation }) {
         clearUserState();
       }
     } else {
-      created = await createUserProfile();
+      await createUserProfile();
     }
+    setLoadingModalVisible(false);
   }
 
   // Loads all products for a home
@@ -167,9 +169,9 @@ export default function HomeScreen({ route, navigation }) {
   // Manage logout
   function logoutAction() {
     const handleLogout = () => {
-      auth
-        .signOut()
+      signOut(auth)
         .then(() => {
+          clearUserState();
           navigation.navigate("LoginScreen");
         })
         .catch((error) => {
@@ -378,10 +380,18 @@ export default function HomeScreen({ route, navigation }) {
         <View style={styles.buttonContainer}>
           <TouchableOpacity
             onPress={() => {
-              navigation.navigate("ConsumeProductScreen", {
-                defaultHome: defaultHomeID,
-                parentFunction: loadUserProducts,
-              });
+              if (defaultHomeID != "") {
+                navigation.navigate("ConsumeProductScreen", {
+                  defaultHome: defaultHomeID,
+                  parentFunction: loadUserProducts,
+                });
+              } else {
+                showToast(
+                  "error",
+                  t("general.error"),
+                  t("components.home.missingDefaultHome")
+                );
+              }
             }}
           >
             <Image
@@ -397,12 +407,20 @@ export default function HomeScreen({ route, navigation }) {
         {/* STORAGE */}
         <View style={styles.buttonContainer}>
           <TouchableOpacity
-            onPress={() =>
-              navigation.navigate("StorageScreen", {
-                defaultHome: defaultHomeID,
-                parentFunction: loadUserProducts,
-              })
-            }
+            onPress={() => {
+              if (defaultHomeID != "") {
+                navigation.navigate("StorageScreen", {
+                  defaultHome: defaultHomeID,
+                  parentFunction: loadUserProducts,
+                });
+              } else {
+                showToast(
+                  "error",
+                  t("general.error"),
+                  t("components.home.missingDefaultHome")
+                );
+              }
+            }}
           >
             <Image
               source={require("../assets/storage.png")}

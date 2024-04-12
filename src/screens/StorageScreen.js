@@ -777,13 +777,13 @@ export default function StorageScreen({ route, navigation }) {
           </View>
         </View>
       </View>
-      <ScrollView style={styles.nestedListContainer}>
+      <View style={styles.nestedListContainer}>
         <NestedListView
           data={data}
           getChildrenName={getChildrenName}
           renderNode={renderNode}
         />
-      </ScrollView>
+      </View>
       {editing && (
         <View style={styles.bottomButtons}>
           {showDelete && (

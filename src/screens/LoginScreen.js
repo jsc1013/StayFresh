@@ -70,11 +70,7 @@ export default function LoginScreen({}) {
 
   // Shows the firebase message error
   function showErrorCode(code) {
-    showToast(
-      "error",
-      t("components.general.error"),
-      t(`components.login.${code}`)
-    );
+    showToast("error", t("general.error"), t(`components.login.${code}`));
   }
 
   return (

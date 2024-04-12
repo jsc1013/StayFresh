@@ -435,11 +435,12 @@ export default function StorageScreen({ route, navigation }) {
         tempProducts = tempProducts.filter(
           (prod) => !productsToUpdate.some((del) => del.id == prod.id)
         );
-
         consumeProducts(productsToUpdate);
       });
-
       updateStorages(defaultHome, storagesTemp);
+
+      setStorages(storagesTemp);
+      setAllProductsNotConsumed(tempProducts);
       arrangeDataTree(storagesTemp, tempProducts, toggleValue);
       showToast(
         "success",
@@ -456,6 +457,7 @@ export default function StorageScreen({ route, navigation }) {
       tempProducts = tempProducts.filter(
         (prod) => !selectedItems.some((del) => del.id == prod.id)
       );
+      setAllProductsNotConsumed(tempProducts);
       showToast(
         "success",
         t("general.success"),

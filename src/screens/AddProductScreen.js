@@ -217,13 +217,15 @@ export default function AddProductScreenScreen({ route, navigation }) {
       storage: storageValue,
     };
 
-    if (await addProduct(newDoc)) {
-      showToast(
-        "success",
-        t("components.general.success", t("components.addProduct.added"))
-      );
-      resetFields();
-    }
+    addProduct(newDoc);
+    showToast(
+      "success",
+      t("components.general.success", t("components.addProduct.added"))
+    );
+    let tempProducts = [...allProductsPeriod];
+    tempProducts.push(newDoc);
+    resetFields();
+    setAllProductsPeriod(tempProducts);
   }
 
   handleCameraRead = (data) => {

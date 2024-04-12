@@ -210,21 +210,17 @@ export default function HomeScreen({ route, navigation }) {
     }
     setEditProductModalVisible(false);
     showLoadingModal();
-    if (await updateProductQuantity(updateProductId, inputNumber)) {
-      updateUserProducts();
-      showToast(
-        "success",
-        t("general.success"),
-        t("components.home.productUpdated")
-      );
-    } else {
-      showToast(
-        "error",
-        t("general.error"),
-        t("components.home.productNotUpdated")
-      );
-      closeLoadingModal();
-    }
+    updateProductQuantity(updateProductId, inputNumber);
+    let tempProducts = [...products];
+    product = tempProducts.find((p) => p.id == updateProductId);
+    product.quantity = parseInt(inputNumber);
+    setProducts(tempProducts);
+    closeLoadingModal();
+    showToast(
+      "success",
+      t("general.success"),
+      t("components.home.productUpdated")
+    );
   }
 
   // Callback function for consume button in swipe list

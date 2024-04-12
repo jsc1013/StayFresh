@@ -2,6 +2,7 @@ import React, { useEffect, useLayoutEffect, useState } from "react";
 import { StyleSheet, View, Text, Image } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { TextInput, Button } from "react-native-paper";
+import { StatusBar } from "expo-status-bar";
 import Toast from "react-native-toast-message";
 import {
   createUserWithEmailAndPassword,

@@ -152,7 +152,7 @@ export default function HomeManagementScreen({ route, navigation }) {
         }
       });
 
-      if (updateHomes(auth.currentUser.email, tempUserHomes)) {
+      if (updateUserHomes(auth.currentUser.email, tempUserHomes)) {
         setUserHomes(tempUserHomes);
         setRefreshCombo(true);
         showToast(

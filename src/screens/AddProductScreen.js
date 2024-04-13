@@ -229,7 +229,6 @@ export default function AddProductScreenScreen({ route, navigation }) {
   }
 
   handleCameraRead = (data) => {
-    console.log(data);
     getProductByBarcode(data);
   };
 

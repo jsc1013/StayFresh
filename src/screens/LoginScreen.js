@@ -49,7 +49,9 @@ export default function LoginScreen({}) {
       .then((userCredential) => {
         const user = userCredential.user;
         if (user.emailVerified) {
-          navigation.navigate("HomeScreen");
+          navigation.navigate("HomeScreen", {
+            userEmail: user.email,
+          });
         } else {
           showToast(
             "error",

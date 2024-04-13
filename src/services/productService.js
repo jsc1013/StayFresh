@@ -91,7 +91,8 @@ export async function getAllProductsPeriod(homeId, fetchPeriod) {
   tempItemsStorage = [];
   const q = query(
     collection(firestoreDB, "products"),
-    (where("home", "==", homeId), where("addedDate", ">=", fetchPeriod))
+    where("home", "==", homeId),
+    where("addedDate", ">=", fetchPeriod)
   );
 
   tempArray = [];

@@ -35,6 +35,8 @@ import NumberInputModal from "../components/NumberInputModalComponent";
 export default function HomeScreen({ route, navigation }) {
   const [loadingModalVisible, setLoadingModalVisible] = useState(true);
 
+  const [userEmail, setUserEmail] = useState(route.params.userEmail);
+
   const [userHomes, setUserHomes] = useState([]);
   const [defaultHomeID, setDefaultHomeID] = useState("");
   const [defaultHomeName, setDefaultHomeName] = useState("");
@@ -90,7 +92,7 @@ export default function HomeScreen({ route, navigation }) {
   // Load user data effect
   useLayoutEffect(() => {
     loadUserData();
-  }, []);
+  }, [userEmail]);
 
   // Shows the toast component
   function showToast(toastType, toastHeader, toastText, position = "top") {
@@ -115,17 +117,19 @@ export default function HomeScreen({ route, navigation }) {
   // Retreives the user data from the service
   async function loadUserData() {
     userData = await getUserData(auth.currentUser.email);
-    if (userData) {
+    if (userData != undefined) {
       setUserHomes(userData.homes);
       var searchDefault = userData.homes.find((home) => home.default == true);
       if (searchDefault != undefined) {
         let previewDate = setUserInitialData(searchDefault);
         loadUserProducts(searchDefault.id, previewDate);
       } else {
-        clearUserState();
+        setDefaultHomeID("");
+        setDefaultHomeName("");
+        setProducts([]);
       }
     } else {
-      await createUserProfile();
+      await createUserProfile(auth.currentUser.email);
     }
     setLoadingModalVisible(false);
   }
@@ -146,6 +150,7 @@ export default function HomeScreen({ route, navigation }) {
     setDefaultHomeID("");
     setDefaultHomeName("");
     setProducts([]);
+    setUserHomes([]);
   }
 
   // Establishes the user initial data into the state
@@ -436,7 +441,19 @@ export default function HomeScreen({ route, navigation }) {
       {/* NEXT TO EXPIRE */}
       <View style={styles.nextToExpireContainer}>
         <View style={styles.nextToExpireTextContainer}>
-          <TouchableOpacity onPress={() => setDropdownInputModalVisible(true)}>
+          <TouchableOpacity
+            onPress={() => {
+              if (defaultHomeID != "") {
+                setDropdownInputModalVisible(true);
+              } else {
+                showToast(
+                  "error",
+                  t("general.error"),
+                  t("components.home.missingDefaultHome")
+                );
+              }
+            }}
+          >
             <Text style={styles.nextToExpireText}>
               {" "}
               {t("components.home.nextExpiraciesText", {

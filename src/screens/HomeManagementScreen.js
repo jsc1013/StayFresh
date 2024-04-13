@@ -473,7 +473,12 @@ export default function HomeManagementScreen({ route, navigation }) {
 
       let homeDocid = await addNewHome(newHome);
       console.log(homeDocid);
-      var tempUserHomes = [...userHomes];
+
+      let tempUserHomes = [];
+
+      if (userHomes != undefined || userHomes.length > 0) {
+        tempUserHomes = [...userHomes];
+      }
 
       tempUserHomes.push({
         default: false,

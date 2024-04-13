@@ -31,7 +31,7 @@ import {
   getAllNotConsumed,
   moveProducts,
   updateProductQuantity,
-  updatProductDate,
+  updateProductDate,
   consumeProducts,
 } from "../services/productService";
 
@@ -530,10 +530,15 @@ export default function StorageScreen({ route, navigation }) {
   }
 
   async function callUpdateProductDate(date) {
+    updateProductDate(selectedItems[0].key, date);
+    let productKey = checkedDic[selectedItems[0].key].key;
     setLoadingModalVisible(true);
-    await updatProductDate(selectedItems[0].key, date);
-    await getAllNotConsumedAndStorages();
+    tempProducts = [...allProductsNotConsumed];
+    var product = tempProducts.find((s) => s.id == productKey);
+    product.expirationDate = parseInt(date);
     showToast("success", t("general.success"), t("components.storage.updated"));
+    await arrangeDataTree(storages, tempProducts, toggleValue);
+    setLoadingModalVisible(false);
   }
 
   const thumbStyle = () => {

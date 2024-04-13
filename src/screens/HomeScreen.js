@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useLayoutEffect } from "react";
+import { useFocusEffect } from "@react-navigation/native";
 import {
   Text,
   StyleSheet,
@@ -34,8 +35,6 @@ import NumberInputModal from "../components/NumberInputModalComponent";
 
 export default function HomeScreen({ route, navigation }) {
   const [loadingModalVisible, setLoadingModalVisible] = useState(true);
-
-  const [userEmail, setUserEmail] = useState(route.params.userEmail);
 
   const [userHomes, setUserHomes] = useState([]);
   const [defaultHomeID, setDefaultHomeID] = useState("");
@@ -90,9 +89,11 @@ export default function HomeScreen({ route, navigation }) {
   }, []);
 
   // Load user data effect
-  useLayoutEffect(() => {
-    loadUserData();
-  }, [userEmail]);
+  useFocusEffect(
+    React.useCallback(() => {
+      loadUserData();
+    }, [])
+  );
 
   // Shows the toast component
   function showToast(toastType, toastHeader, toastText, position = "top") {

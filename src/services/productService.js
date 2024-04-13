@@ -169,7 +169,7 @@ export async function consumeProducts(products) {
 
 export async function updateProductDate(productId, date) {
   try {
-    await updateDoc(doc(firestoreDB, "products", productId), {
+    updateDoc(doc(firestoreDB, "products", productId), {
       expirationDate: parseInt(date),
     });
     return true;

@@ -40,7 +40,9 @@
     "react-native-toggle-element": "^2.0.1",
     "react-native-uuid": "^2.0.2",
     "react-native-vector-icons": "^10.0.3",
-    "use-debounce": "^10.0.0"
+    "use-debounce": "^10.0.0",
+    "jest-expo": "~50.0.4",
+    "jest": "^29.3.1"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"

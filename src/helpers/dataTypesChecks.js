@@ -6,3 +6,12 @@ export function isInt(value) {
     !isNaN(parseInt(value, 10))
   );
 }
+
+// Checks if value is positive
+export function isPositive(number) {
+  if (number > 0) {
+    return true;
+  } else {
+    return false;
+  }
+}

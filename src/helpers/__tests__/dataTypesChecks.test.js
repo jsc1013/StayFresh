@@ -1,4 +1,4 @@
-import { isInt } from "../dataTypesChecks";
+import { isInt, isPositive } from "../dataTypesChecks";
 
 describe("isInt", () => {
   test("debería retornar true para números enteros", () => {
@@ -19,5 +19,23 @@ describe("isInt", () => {
     expect(isInt(null)).toBe(false);
     expect(isInt(undefined)).toBe(false);
     expect(isInt(true)).toBe(false);
+  });
+});
+
+describe("isPositive", () => {
+  test("debe retornar true para números positivos", () => {
+    expect(isPositive(1)).toBe(true);
+    expect(isPositive(20)).toBe(true);
+    expect(isPositive(0.1)).toBe(true);
+  });
+
+  test("debe retornar false para cero", () => {
+    expect(isPositive(0)).toBe(false);
+  });
+
+  test("debe retornar false para números negativos", () => {
+    expect(isPositive(-1)).toBe(false);
+    expect(isPositive(-20)).toBe(false);
+    expect(isPositive(-0.1)).toBe(false);
   });
 });

@@ -22,6 +22,7 @@ import { getAllProductsPeriod, addProduct } from "../services/productService";
 export default function AddProductScreenScreen({ route, navigation }) {
   const { t } = useTranslation();
   const defaultHome = route.params.defaultHome;
+  const defaultStorage = route.params.defaultStorage;
 
   const [allProductsPeriod, setAllProductsPeriod] = useState([]);
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
@@ -97,6 +98,9 @@ export default function AddProductScreenScreen({ route, navigation }) {
       setAllProductsPeriod(products);
     }
     fetchProducts();
+    if (defaultStorage != undefined) {
+      setStorageValue(defaultStorage);
+    }
   }, []);
 
   // Gets the different storages from the defaultHome
@@ -367,21 +371,34 @@ export default function AddProductScreenScreen({ route, navigation }) {
           theme={{ colors: { primary: myColors.mainBlue } }}
         />
 
-        <DropDownPicker
-          open={openStorage}
-          value={storageValue}
-          items={storageItems}
-          setOpen={setOpenStorage}
-          setValue={setStorageValue}
-          setItems={setStorageItems}
-          theme="LIGHT"
-          multiple={false}
-          mode="SIMPLE"
-          listMode="MODAL"
-          modalAnimationType="fade"
-          placeholder={t("components.addProduct.selectStorage")}
-          style={styles.dropdown}
-        />
+        {defaultStorage == undefined && (
+          <DropDownPicker
+            open={openStorage}
+            value={storageValue}
+            items={storageItems}
+            setOpen={setOpenStorage}
+            setValue={setStorageValue}
+            setItems={setStorageItems}
+            theme="LIGHT"
+            multiple={false}
+            mode="SIMPLE"
+            listMode="MODAL"
+            modalAnimationType="fade"
+            placeholder={t("components.addProduct.selectStorage")}
+            style={styles.dropdown}
+          />
+        )}
+
+        {defaultStorage != undefined && (
+          <TextInput
+            style={styles.input}
+            label={t("components.addProduct.storage")}
+            value={defaultStorage}
+            theme={{ colors: { primary: myColors.mainBlue } }}
+            editable={false}
+          />
+        )}
+
         <TouchableOpacity
           style={{ width: "100%" }}
           onPress={() => showDatepicker()}

@@ -649,6 +649,22 @@ export default function StorageScreen({ route, navigation }) {
           ></Icon>
         )}
 
+        {!editing && node.level == 1 && (
+          <Icon
+            onPress={() => {
+              navigation.navigate("AddProductScreen", {
+                defaultHome: defaultHome,
+                defaultStorage: node.name,
+                parentFunction: getAllNotConsumedAndStorages,
+              });
+            }}
+            style={styles.addProducts}
+            color={"gray"}
+            name="plus-circle-outline"
+            size={30}
+          />
+        )}
+
         {editing && (
           <TouchableOpacity
             style={styles.checkbox}
@@ -917,7 +933,12 @@ const styles = StyleSheet.create({
   checkbox: {
     position: "absolute",
     right: 50,
-    marginTop: 2,
+    marginTop: 4,
+  },
+  addProducts: {
+    position: "absolute",
+    right: 52,
+    marginTop: 7,
   },
   nodeChevronIcon: {
     position: "absolute",

@@ -48,7 +48,8 @@
          "added":"Producto añadido",
          "barcode":"Código de barras",
          "scan":"Escanear código de barras",
-         "productNotFound":"Producto no encontrado, añádalo"
+         "productNotFound":"Producto no encontrado, añádalo",
+         "storage":"Ubicación"
       },
       "modal":{
          "units":"Nuevas unidades",

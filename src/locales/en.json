@@ -48,7 +48,8 @@
          "added":"Product was added",
          "barcode":"Barcode",
          "scan":"Scan barcode",
-         "productNotFound":"Product not found, you will need to add it manually"
+         "productNotFound":"Product not found, you will need to add it manually",
+         "storage":"Storage"
       },
       "modal":{
          "units":"New units",

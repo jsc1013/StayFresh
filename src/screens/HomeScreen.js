@@ -117,22 +117,24 @@ export default function HomeScreen({ route, navigation }) {
 
   // Retreives the user data from the service
   async function loadUserData() {
-    userData = await getUserData(auth.currentUser.email);
-    if (userData != undefined) {
-      setUserHomes(userData.homes);
-      var searchDefault = userData.homes.find((home) => home.default == true);
-      if (searchDefault != undefined) {
-        let previewDate = setUserInitialData(searchDefault);
-        loadUserProducts(searchDefault.id, previewDate);
-      } else {
-        setDefaultHomeID("");
-        setDefaultHomeName("");
-        setProducts([]);
+    if (auth.currentUser.email != undefined) {
+      let userData = await getUserData(auth.currentUser.email);
+      if (userData != undefined) {
+        setUserHomes(userData.homes);
+        var searchDefault = userData.homes.find((home) => home.default == true);
+        if (searchDefault != undefined) {
+          let previewDate = setUserInitialData(searchDefault);
+          loadUserProducts(searchDefault.id, previewDate);
+        } else {
+          setDefaultHomeID("");
+          setDefaultHomeName("");
+          setProducts([]);
+        }
+      } else if (userData == undefined) {
+        await createUserProfile(auth.currentUser.email);
       }
-    } else {
-      await createUserProfile(auth.currentUser.email);
+      setLoadingModalVisible(false);
     }
-    setLoadingModalVisible(false);
   }
 
   // Loads all products for a home

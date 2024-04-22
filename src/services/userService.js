@@ -6,7 +6,7 @@ export async function getUserData(id) {
     let userDoc = await getDoc(doc(firestoreDB, "users", id));
     return userDoc.data();
   } catch (e) {
-    return;
+    return undefined;
   }
 }
 

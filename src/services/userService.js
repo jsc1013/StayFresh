@@ -14,6 +14,7 @@ export async function createUserProfile(id) {
   try {
     await setDoc(doc(firestoreDB, "users", id), {
       homes: [],
+      onboardingDone: false,
     });
     return true;
   } catch (e) {
@@ -25,6 +26,18 @@ export async function updateUserHomes(id, updatedHomes) {
   try {
     await updateDoc(doc(firestoreDB, "users", id), {
       homes: updatedHomes,
+    });
+    return true;
+  } catch (e) {
+    console.log(e);
+    return false;
+  }
+}
+
+export async function updateUserOnboarding(id) {
+  try {
+    await updateDoc(doc(firestoreDB, "users", id), {
+      onboardingDone: true,
     });
     return true;
   } catch (e) {

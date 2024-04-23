@@ -118,6 +118,31 @@
          "newStorageName": "Nombre para el nuevo contenedor",
          "selectStorage": "Seleccionar contenedor",
          "moved": "Elementos movidos"
+      },
+      "onboarding": {
+         "next":"Siguiente",
+         "welcome":"Bienvenido a StayFresh",
+         "page1Text":"Tu aplicación para evitar desperdicios",
+         "startTitle": "¡Comencemos!",
+         "startText": "Primero tendrás que establecer un hogar",
+         "setupHomeTitle": "Añadir o crear hogar",
+         "setupHomeText": "Pega o escanea el código QR de un hogar existente o crea uno nuevo",
+         "establishDefaultTitle": "Establecer por defecto",
+         "establishDefaultText": "Selecciona el nuevo hogar y establécelo por defecto",
+         "establishedHomeTitle": "Hogar establecido",
+         "establishedHomeText": "El nombre del hogar actual se mostrará en la barra superior",
+         "createStorageTitle": "Crear nuevo contenedor",
+         "createStorageText": "En el menú de almacenamiento crea un nuevo contenedor para añadir productos",
+         "addProductTitle": "Añadir producto",
+         "addProductText": "Presiona el botón añadir sobre el almacenamiento o ve al menú añadir",
+         "homeOverviewTitle": "Resumen de productos",
+         "homeOverviewText": "El menú principal mostrará un resumen de productos",
+         "homeOverviewEditTitle": "Edición en el resumen",
+         "homeOverviewEditText": "Desliza cada elemento para editarlo rápidamente",
+         "storageOverviewTitle": "Resumen de almacenamiento",
+         "storageOverviewText": "El menú de almacenamiento nos mostrará los productos dentro de sus contenedores",
+         "storageEditionTitle": "Edición de almacenamiento",
+         "storageEditionText": "Presiona el icono del lápiz para entrar en el modo edición"
       }
    },
    "general":{

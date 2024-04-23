@@ -118,6 +118,31 @@
          "newStorageName": "Input a new storage name",
          "selectStorage": "Select storage",
          "moved": "Items moved"
+      },
+      "onboarding": {
+         "next":"Next",
+         "welcome":"Welcome to StayFresh",
+         "page1Text":"Your app to prevent food wasting",
+         "startTitle": "Let's start!",
+         "startText": "First you will need to setup a home",
+         "setupHomeTitle": "Add existing or create new",
+         "setupHomeText": "Paste or scan an existing home QR or create a new one",
+         "establishDefaultTitle": "Establish default",
+         "establishDefaultText": "Select your new home and press establish as default",
+         "establishedHomeTitle": "Established default home",
+         "establishedHomeText": "The name of the current home will be shown in the top bar",
+         "createStorageTitle": "Create new container",
+         "createStorageText": "On the container menu create a new container to add products inside",
+         "addProductTitle": "Add a product",
+         "addProductText": "Press the add button on the storage or go to the add product menu",
+         "homeOverviewTitle": "Product overview",
+         "homeOverviewText": "The home menu will show a product overview",
+         "homeOverviewEditTitle": "Overview edition",
+         "homeOverviewEditText": "Slide an element to edit it",
+         "storageOverviewTitle": "Storage overview",
+         "storageOverviewText": "The storage menu will show the products inside the storages",
+         "storageEditionTitle": "Storage edition",
+         "storageEditionText": "Press the pencil icon to enable edition mode"
       }
    },
    "general":{

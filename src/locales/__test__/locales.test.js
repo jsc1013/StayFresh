@@ -11,6 +11,7 @@ describe("Validación de formato JSON del módulo en", () => {
     expect(en).toHaveProperty("components.homeManagement");
     expect(en).toHaveProperty("components.consumeProduct");
     expect(en).toHaveProperty("components.storage");
+    expect(en).toHaveProperty("components.onboarding");
     expect(en).toHaveProperty("general");
   });
 
@@ -29,6 +30,7 @@ describe("Validación de formato JSON del módulo es", () => {
     expect(es).toHaveProperty("components.homeManagement");
     expect(es).toHaveProperty("components.consumeProduct");
     expect(es).toHaveProperty("components.storage");
+    expect(es).toHaveProperty("components.onboarding");
     expect(es).toHaveProperty("general");
   });
 

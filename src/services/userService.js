@@ -14,6 +14,7 @@ export async function createUserProfile(id) {
   try {
     await setDoc(doc(firestoreDB, "users", id), {
       homes: [],
+      onboardingDone: false,
     });
     return true;
   } catch (e) {

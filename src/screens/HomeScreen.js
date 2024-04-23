@@ -32,6 +32,7 @@ import {
 } from "../services/userService";
 import { signOut } from "firebase/auth";
 import NumberInputModal from "../components/NumberInputModalComponent";
+import SimpleOnboarding from "../components/OnboardingComponent";
 
 export default function HomeScreen({ route, navigation }) {
   const [loadingModalVisible, setLoadingModalVisible] = useState(true);
@@ -41,6 +42,7 @@ export default function HomeScreen({ route, navigation }) {
   const [defaultHomeName, setDefaultHomeName] = useState("");
   const [defaultHomePreviewDays, setDefaultHomePreviewDays] = useState();
   const [defaultHomePreviewDate, setDefaultHomePreviewDate] = useState();
+  const [showOnboarding, setShowOnboarding] = useState(true);
 
   const [products, setProducts] = useState([]);
 
@@ -131,6 +133,7 @@ export default function HomeScreen({ route, navigation }) {
           setProducts([]);
         }
       } else if (userData == undefined) {
+        setShowOnboarding(true);
         await createUserProfile(auth.currentUser.email);
       }
       setLoadingModalVisible(false);
@@ -284,6 +287,19 @@ export default function HomeScreen({ route, navigation }) {
       setDefaultHomePreviewDate(parseInt(previewDate));
       loadUserProducts(defaultHomeID, parseInt(previewDate));
     }
+  }
+
+  function hideOnboarding() {
+    setShowOnboarding(false);
+  }
+
+  if (showOnboarding) {
+    return (
+      <View style={styles.containerFull}>
+        <StatusBar></StatusBar>
+        <SimpleOnboarding callBackFunction={hideOnboarding}></SimpleOnboarding>
+      </View>
+    );
   }
 
   return (
@@ -485,6 +501,9 @@ export default function HomeScreen({ route, navigation }) {
 }
 
 const styles = StyleSheet.create({
+  containerFull: {
+    flex: 1,
+  },
   container: {
     flex: 1,
     paddingTop: 40,

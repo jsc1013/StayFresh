@@ -29,6 +29,7 @@ import {
   getUserData,
   createUserProfile,
   updateUserHomes,
+  updateUserOnboarding,
 } from "../services/userService";
 import { signOut } from "firebase/auth";
 import NumberInputModal from "../components/NumberInputModalComponent";
@@ -42,7 +43,7 @@ export default function HomeScreen({ route, navigation }) {
   const [defaultHomeName, setDefaultHomeName] = useState("");
   const [defaultHomePreviewDays, setDefaultHomePreviewDays] = useState();
   const [defaultHomePreviewDate, setDefaultHomePreviewDate] = useState();
-  const [showOnboarding, setShowOnboarding] = useState(true);
+  const [showOnboarding, setShowOnboarding] = useState(false);
 
   const [products, setProducts] = useState([]);
 
@@ -122,6 +123,7 @@ export default function HomeScreen({ route, navigation }) {
     if (auth.currentUser.email != undefined) {
       let userData = await getUserData(auth.currentUser.email);
       if (userData != undefined) {
+        setShowOnboarding(!userData.onboardingDone);
         setUserHomes(userData.homes);
         var searchDefault = userData.homes.find((home) => home.default == true);
         if (searchDefault != undefined) {
@@ -290,6 +292,7 @@ export default function HomeScreen({ route, navigation }) {
   }
 
   function hideOnboarding() {
+    updateUserOnboarding(auth.currentUser.email);
     setShowOnboarding(false);
   }
 

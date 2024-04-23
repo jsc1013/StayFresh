@@ -138,7 +138,7 @@
          "homeOverviewTitle": "Product overview",
          "homeOverviewText": "The home menu will show a product overview",
          "homeOverviewEditTitle": "Overview edition",
-         "homeOverviewEditText": "Slide each element to edit them",
+         "homeOverviewEditText": "Slide an element to edit it",
          "storageOverviewTitle": "Storage overview",
          "storageOverviewText": "The storage menu will show the products inside the storages"
       }

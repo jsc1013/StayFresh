@@ -144,6 +144,19 @@ const SimpleOnboarding = ({ callBackFunction }) => {
           title: t("components.onboarding.storageOverviewTitle"),
           subtitle: t("components.onboarding.storageOverviewText"),
         },
+        {
+          backgroundColor: myColors.androidDefaultWhite,
+          image: (
+            <View style={styles.imageContainer}>
+              <Image
+                style={styles.image}
+                source={require("../assets/onboarding/storageEdition.png")}
+              />
+            </View>
+          ),
+          title: t("components.onboarding.storageEditionTitle"),
+          subtitle: t("components.onboarding.storageEditionText"),
+        },
       ]}
     />
   );

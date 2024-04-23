@@ -140,7 +140,9 @@
          "homeOverviewEditTitle": "Overview edition",
          "homeOverviewEditText": "Slide an element to edit it",
          "storageOverviewTitle": "Storage overview",
-         "storageOverviewText": "The storage menu will show the products inside the storages"
+         "storageOverviewText": "The storage menu will show the products inside the storages",
+         "storageEditionTitle": "Storage edition",
+         "storageEditionText": "Press the pencil icon to enable edition mode"
       }
    },
    "general":{

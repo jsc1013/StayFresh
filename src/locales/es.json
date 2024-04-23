@@ -140,7 +140,9 @@
          "homeOverviewEditTitle": "Edición en el resumen",
          "homeOverviewEditText": "Desliza cada elemento para editarlo rápidamente",
          "storageOverviewTitle": "Resumen de almacenamiento",
-         "storageOverviewText": "El menú de almacenamiento nos mostrará los productos dentro de sus contenedores"
+         "storageOverviewText": "El menú de almacenamiento nos mostrará los productos dentro de sus contenedores",
+         "storageEditionTitle": "Edición de almacenamiento",
+         "storageEditionText": "Presiona el icono del lápiz para entrar en el modo edición"
       }
    },
    "general":{

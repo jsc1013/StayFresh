@@ -34,6 +34,7 @@ import {
   updateProductDate,
   consumeProducts,
 } from "../services/productService";
+import { isInt } from "../helpers/dataTypesChecks";
 
 export default function StorageScreen({ route, navigation }) {
   const { t } = useTranslation();
@@ -494,6 +495,10 @@ export default function StorageScreen({ route, navigation }) {
   }
 
   async function handleNumberInputModal(inputNumber) {
+    if (!isInt(inputNumber) || inputNumber <= 0) {
+      Alert.alert(t("components.storage.positiveValue"));
+      return;
+    }
     updateProductQty(inputNumber);
   }
 

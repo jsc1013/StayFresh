@@ -117,7 +117,8 @@
          "updated": "Product update",
          "newStorageName": "Input a new storage name",
          "selectStorage": "Select storage",
-         "moved": "Items moved"
+         "moved": "Items moved",
+         "positiveValue":"Error. Value must be positive number"
       },
       "onboarding": {
          "next":"Next",

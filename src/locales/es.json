@@ -117,7 +117,8 @@
          "updated": "Producto actualizado",
          "newStorageName": "Nombre para el nuevo contenedor",
          "selectStorage": "Seleccionar contenedor",
-         "moved": "Elementos movidos"
+         "moved": "Elementos movidos",
+         "positiveValue":"Error. El valor debe ser un número positivo"
       },
       "onboarding": {
          "next":"Siguiente",

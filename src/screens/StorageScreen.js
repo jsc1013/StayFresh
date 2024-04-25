@@ -400,6 +400,14 @@ export default function StorageScreen({ route, navigation }) {
     setShowQuantity(quantity);
   }
 
+  async function resetStatus() {
+    changeButtonsStates(false, false, false, false);
+    setItemsSelected(false);
+    setStoragesSelected(false);
+    setEditing(false);
+    arrangeDataTree(storages, allProductsNotConsumed, toggleValue);
+  }
+
   async function askDeleteSelectedElements() {
     Alert.alert(
       t("components.storage.askDeleteHeader"),
@@ -781,24 +789,23 @@ export default function StorageScreen({ route, navigation }) {
             thumbButton={thumbStyle()}
           />
           <View style={styles.iconContainer}>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => resetStatus()}>
+              <Icon style={styles.icon} name="chevron-up" size={40}></Icon>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                setEditing(!editing);
+              }}
+            >
               <Icon
-                onPress={() => {
-                  setEditing(!editing);
-                }}
                 style={styles.icon}
                 name="pencil"
                 size={30}
                 color={editing ? "grey" : "black"}
               />
             </TouchableOpacity>
-            <TouchableOpacity>
-              <Icon
-                onPress={() => setModalInputStorageVisible(true)}
-                style={styles.icon}
-                name="plus-circle-outline"
-                size={30}
-              />
+            <TouchableOpacity onPress={() => setModalInputStorageVisible(true)}>
+              <Icon style={styles.icon} name="plus-circle-outline" size={30} />
             </TouchableOpacity>
           </View>
         </View>
@@ -917,11 +924,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignContent: "center",
     justifyContent: "space-between",
-    marginLeft: 60,
+    marginLeft: 20,
     marginTop: 10,
   },
   icon: {
-    marginRight: 10,
+    marginRight: 20,
   },
   nestedListContainer: {
     flex: 1,

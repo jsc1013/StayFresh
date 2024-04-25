@@ -29,9 +29,11 @@ import {
   getUserData,
   createUserProfile,
   updateUserHomes,
+  updateUserOnboarding,
 } from "../services/userService";
 import { signOut } from "firebase/auth";
 import NumberInputModal from "../components/NumberInputModalComponent";
+import SimpleOnboarding from "../components/OnboardingComponent";
 
 export default function HomeScreen({ route, navigation }) {
   const [loadingModalVisible, setLoadingModalVisible] = useState(true);
@@ -41,6 +43,7 @@ export default function HomeScreen({ route, navigation }) {
   const [defaultHomeName, setDefaultHomeName] = useState("");
   const [defaultHomePreviewDays, setDefaultHomePreviewDays] = useState();
   const [defaultHomePreviewDate, setDefaultHomePreviewDate] = useState();
+  const [showOnboarding, setShowOnboarding] = useState(false);
 
   const [products, setProducts] = useState([]);
 
@@ -120,6 +123,7 @@ export default function HomeScreen({ route, navigation }) {
     if (auth.currentUser.email != undefined) {
       let userData = await getUserData(auth.currentUser.email);
       if (userData != undefined) {
+        setShowOnboarding(!userData.onboardingDone);
         setUserHomes(userData.homes);
         var searchDefault = userData.homes.find((home) => home.default == true);
         if (searchDefault != undefined) {
@@ -131,6 +135,7 @@ export default function HomeScreen({ route, navigation }) {
           setProducts([]);
         }
       } else if (userData == undefined) {
+        setShowOnboarding(true);
         await createUserProfile(auth.currentUser.email);
       }
       setLoadingModalVisible(false);
@@ -284,6 +289,20 @@ export default function HomeScreen({ route, navigation }) {
       setDefaultHomePreviewDate(parseInt(previewDate));
       loadUserProducts(defaultHomeID, parseInt(previewDate));
     }
+  }
+
+  function hideOnboarding() {
+    updateUserOnboarding(auth.currentUser.email);
+    setShowOnboarding(false);
+  }
+
+  if (showOnboarding) {
+    return (
+      <View style={styles.containerFull}>
+        <StatusBar></StatusBar>
+        <SimpleOnboarding callBackFunction={hideOnboarding}></SimpleOnboarding>
+      </View>
+    );
   }
 
   return (
@@ -485,6 +504,9 @@ export default function HomeScreen({ route, navigation }) {
 }
 
 const styles = StyleSheet.create({
+  containerFull: {
+    flex: 1,
+  },
   container: {
     flex: 1,
     paddingTop: 40,

@@ -26,7 +26,8 @@
       "permissions": [
         "android.permission.CAMERA",
         "android.permission.RECORD_AUDIO"
-      ]
+      ],
+      "package": "com.jsc1013.stayfresh"
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -42,6 +43,14 @@
           "recordAudioAndroid": true
         }
       ]
-    ]
+    ],
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "0557123f-0fab-4172-b778-6a37ad50db5f"
+      }
+    }
   }
 }

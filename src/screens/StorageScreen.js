@@ -7,7 +7,6 @@ import {
   Modal,
   ActivityIndicator,
   TouchableOpacity,
-  ScrollView,
   Alert,
 } from "react-native";
 import { Checkbox, Searchbar } from "react-native-paper";
@@ -22,6 +21,7 @@ import TextInputModal from "../components/TextInputModalComponent";
 import NumberInputModal from "../components/NumberInputModalComponent";
 import DropdownInputModal from "../components/DropdownModalComponent";
 import { myColors } from "../constants/Colors";
+import { useDebounce } from "use-debounce";
 
 import uuid from "react-native-uuid";
 import { useTranslation } from "react-i18next";
@@ -41,6 +41,7 @@ export default function StorageScreen({ route, navigation }) {
   const defaultHome = route.params.defaultHome;
 
   const [searchText, setSearchText] = useState("");
+  const [searchTextDebounce] = useDebounce(searchText, 300);
   const [toggleValue, setToggleValue] = useState(false);
   const [allProductsNotConsumed, setAllProductsNotConsumed] = useState("");
   const [storages, setStorages] = useState([]);
@@ -116,6 +117,7 @@ export default function StorageScreen({ route, navigation }) {
     setStorages(tempStorages);
     setModalInputStorageVisible(false);
     arrangeDataTree(storages, allProductsNotConsumed, toggleValue);
+    setSearchText("");
     showToast(
       "success",
       t("general.success"),
@@ -139,6 +141,7 @@ export default function StorageScreen({ route, navigation }) {
       setAllProductsNotConsumed(tempProductsArray);
       setStorages(tempStorages);
       arrangeDataTree(tempStorages, tempProductsArray, toggleValue);
+      setSearchText("");
       setLoadingModalVisible(false);
     });
   }
@@ -150,6 +153,36 @@ export default function StorageScreen({ route, navigation }) {
     };
     fetch();
   }, []);
+
+  useEffect(() => {
+    filterSearch(searchTextDebounce);
+  }, [searchTextDebounce]);
+
+  function filterSearch(filter) {
+    if (filter.length > 1) {
+      let tempStorages = [...storages];
+      let tempProducts = [...allProductsNotConsumed];
+
+      let filteredProds = tempProducts.filter(
+        (prod) =>
+          prod.name.toLowerCase().includes(filter.toLowerCase()) ||
+          prod.storage.toLowerCase().includes(filter.toLowerCase())
+      );
+
+      let filteredStorages = tempStorages.filter((st) =>
+        st.toLowerCase().includes(filter.toLowerCase())
+      );
+
+      filteredProds.forEach((prod) => {
+        if (!filteredStorages.includes(prod.storage)) {
+          filteredStorages.push(prod.storage);
+        }
+      });
+      arrangeDataTree(filteredStorages, filteredProds, toggleValue);
+    } else {
+      arrangeDataTree(storages, allProductsNotConsumed, toggleValue);
+    }
+  }
 
   function arrangeDataTree(tempStorages, tempProductsArray, sortType) {
     setSelectedItems([]);
@@ -405,6 +438,7 @@ export default function StorageScreen({ route, navigation }) {
     setItemsSelected(false);
     setStoragesSelected(false);
     setEditing(false);
+    setSearchText("");
     arrangeDataTree(storages, allProductsNotConsumed, toggleValue);
   }
 
@@ -451,6 +485,7 @@ export default function StorageScreen({ route, navigation }) {
       setStorages(storagesTemp);
       setAllProductsNotConsumed(tempProducts);
       arrangeDataTree(storagesTemp, tempProducts, toggleValue);
+      setSearchText("");
       showToast(
         "success",
         t("general.success"),
@@ -473,6 +508,7 @@ export default function StorageScreen({ route, navigation }) {
         t("components.storage.deleted")
       );
       await arrangeDataTree(storages, tempProducts, toggleValue);
+      setSearchText("");
     }
   };
 
@@ -494,6 +530,7 @@ export default function StorageScreen({ route, navigation }) {
       product.storage = value;
     });
     await arrangeDataTree(storages, tempProducts, toggleValue);
+    setSearchText("");
     setLoadingModalVisible(false);
     showToast("success", t("general.success"), t("components.storage.moved"));
   }
@@ -520,6 +557,7 @@ export default function StorageScreen({ route, navigation }) {
     product.quantity = parseInt(inputNumber);
     showToast("success", t("general.success"), t("components.storage.updated"));
     await arrangeDataTree(storages, tempProducts, toggleValue);
+    setSearchText("");
     setLoadingModalVisible(false);
   }
 
@@ -551,6 +589,7 @@ export default function StorageScreen({ route, navigation }) {
     product.expirationDate = parseInt(date);
     showToast("success", t("general.success"), t("components.storage.updated"));
     await arrangeDataTree(storages, tempProducts, toggleValue);
+    setSearchText("");
     setLoadingModalVisible(false);
   }
 
@@ -592,52 +631,6 @@ export default function StorageScreen({ route, navigation }) {
 
     if (node.descendants != undefined && node.descendants.length > 0) {
       hasDescendants = true;
-    }
-
-    var shouldShow = false;
-    if (searchText.length > 1) {
-      if (node.name.toLowerCase().includes(searchText.toLowerCase())) {
-        shouldShow = true;
-      }
-
-      if (!shouldShow) {
-        if (node.level == 1) {
-          node.descendants.forEach((level2) => {
-            if (level2.name.toLowerCase().includes(searchText.toLowerCase())) {
-              shouldShow = true;
-            }
-          });
-        }
-
-        if (node.level == 2) {
-          if (
-            checkedDic[checkedDic[node.key].parent].name
-              .toLowerCase()
-              .includes(searchText.toLowerCase())
-          ) {
-            shouldShow = true;
-          }
-        }
-
-        if (node.level == 3) {
-          if (
-            checkedDic[checkedDic[node.key].parent].name
-              .toLowerCase()
-              .includes(searchText.toLowerCase()) ||
-            checkedDic[checkedDic[checkedDic[node.key].parent].parent].name
-              .toLowerCase()
-              .includes(searchText.toLowerCase())
-          ) {
-            shouldShow = true;
-          }
-        }
-      }
-    } else {
-      shouldShow = true;
-    }
-
-    if (!shouldShow) {
-      return;
     }
 
     return (
@@ -780,7 +773,7 @@ export default function StorageScreen({ route, navigation }) {
             style={styles.toggle}
             onPress={(newState) => {
               setToggleValue(newState);
-              arrangeDataTree(storages, allProductsNotConsumed, newState);
+              filterSearch(searchTextDebounce);
             }}
             leftTitle={t("components.storage.alphabetic")}
             rightTitle={t("components.storage.date")}

@@ -158,7 +158,7 @@ export default function StorageScreen({ route, navigation }) {
     filterSearch(searchTextDebounce);
   }, [searchTextDebounce]);
 
-  function filterSearch(filter) {
+  function filterSearch(filter, orderBy = toggleValue) {
     if (filter.length > 1) {
       let tempStorages = [...storages];
       let tempProducts = [...allProductsNotConsumed];
@@ -178,9 +178,9 @@ export default function StorageScreen({ route, navigation }) {
           filteredStorages.push(prod.storage);
         }
       });
-      arrangeDataTree(filteredStorages, filteredProds, toggleValue);
+      arrangeDataTree(filteredStorages, filteredProds, orderBy);
     } else {
-      arrangeDataTree(storages, allProductsNotConsumed, toggleValue);
+      arrangeDataTree(storages, allProductsNotConsumed, orderBy);
     }
   }
 
@@ -773,7 +773,7 @@ export default function StorageScreen({ route, navigation }) {
             style={styles.toggle}
             onPress={(newState) => {
               setToggleValue(newState);
-              filterSearch(searchTextDebounce);
+              filterSearch(searchTextDebounce, newState);
             }}
             leftTitle={t("components.storage.alphabetic")}
             rightTitle={t("components.storage.date")}

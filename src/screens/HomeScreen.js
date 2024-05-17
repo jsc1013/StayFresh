@@ -175,8 +175,10 @@ export default function HomeScreen({ route, navigation }) {
 
   // Updates the user products on screen
   function updateUserProducts() {
-    showLoadingModal(true);
-    loadUserProducts(defaultHomeID, defaultHomePreviewDate);
+    if (defaultHomeID) {
+      showLoadingModal(true);
+      loadUserProducts(defaultHomeID, defaultHomePreviewDate);
+    }
   }
 
   // Manage logout

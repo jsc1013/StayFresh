@@ -106,7 +106,9 @@ export async function getAllProductsPeriod(homeId, fetchPeriod) {
 
   const filteredArray = tempArray.filter(
     (obj, index) =>
-      tempArray.findIndex((item) => item.barcode === obj.barcode) === index
+      tempArray.findIndex(
+        (item) => item.barcode === obj.barcode && item.name === obj.name
+      ) === index
   );
 
   return filteredArray;

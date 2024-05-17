@@ -467,21 +467,26 @@ export default function HomeManagementScreen({ route, navigation }) {
       }
       const newHome = {
         addedDate: new Date().getTime(),
-        storage: [],
+        storage: ["default"],
         users: [auth.currentUser.email],
       };
 
       let homeDocid = await addNewHome(newHome);
-      console.log(homeDocid);
-
       let tempUserHomes = [];
 
       if (userHomes != undefined || userHomes.length > 0) {
         tempUserHomes = [...userHomes];
       }
 
+      let existsDefault = tempUserHomes.filter((home) => home.default == true);
+
+      let isDefault = false;
+      if (!existsDefault || existsDefault.length == 0) {
+        isDefault = true;
+      }
+
       tempUserHomes.push({
-        default: false,
+        default: isDefault,
         id: homeDocid,
         name: newHomeName,
         previewDays: 7,

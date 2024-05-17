@@ -467,7 +467,7 @@ export default function HomeManagementScreen({ route, navigation }) {
       }
       const newHome = {
         addedDate: new Date().getTime(),
-        storage: [],
+        storage: ["default"],
         users: [auth.currentUser.email],
       };
 

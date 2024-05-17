@@ -237,11 +237,11 @@ export default function AddProductScreenScreen({ route, navigation }) {
   };
 
   function getProductByBarcode(barcode) {
-    const productFound = allProductsPeriod.find(
+    const productFound = allProductsPeriod.filter(
       (product) => product.barcode === barcode
     );
 
-    if (productFound == undefined) {
+    if (productFound == undefined || productFound.length == 0) {
       showToast(
         "error",
         t(
@@ -257,15 +257,20 @@ export default function AddProductScreenScreen({ route, navigation }) {
       return;
     }
 
-    setProductName(productFound.name);
+    if (productFound.length > 1) {
+      setSearchText(barcode);
+      setOpenSearch(true);
+    } else {
+      setProductName(productFound[0].name);
 
-    productBrand == undefined
-      ? setProductBrand("")
-      : setProductBrand(productFound.brand);
+      productBrand == undefined
+        ? setProductBrand("")
+        : setProductBrand(productFound[0].brand);
 
-    barcode == undefined
-      ? setProductBarcode("")
-      : setProductBarcode(productFound.barcode);
+      barcode == undefined
+        ? setProductBarcode("")
+        : setProductBarcode(productFound[0].barcode);
+    }
   }
 
   return (

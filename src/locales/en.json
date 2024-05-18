@@ -49,7 +49,9 @@
          "barcode":"Barcode",
          "scan":"Scan barcode",
          "productNotFound":"Product not found, you will need to add it manually",
-         "storage":"Storage"
+         "storage":"Storage",
+         "deleteSuggestionHeader":"Delete suggestion and references",
+         "deleteSuggestionMessage": "Are you sure?"
       },
       "modal":{
          "units":"New units",

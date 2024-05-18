@@ -49,7 +49,9 @@
          "barcode":"Código de barras",
          "scan":"Escanear código de barras",
          "productNotFound":"Producto no encontrado, añádalo",
-         "storage":"Ubicación"
+         "storage":"Ubicación",
+         "deleteSuggestionHeader":"Borrar sugerencia y sus referencias",
+         "deleteSuggestionMessage": "¿Estás seguro?"
       },
       "modal":{
          "units":"Nuevas unidades",

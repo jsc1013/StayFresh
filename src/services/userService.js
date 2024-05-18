@@ -1,5 +1,6 @@
 import { firestoreDB } from "../config/firebase-config";
 import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
+import { addNewHome } from "./homeService";
 
 export async function getUserData(id) {
   try {
@@ -12,8 +13,22 @@ export async function getUserData(id) {
 
 export async function createUserProfile(id) {
   try {
+    const newHome = {
+      addedDate: new Date().getTime(),
+      storage: ["default"],
+      users: [id],
+    };
+
+    let homeid = await addNewHome(newHome);
     await setDoc(doc(firestoreDB, "users", id), {
-      homes: [],
+      homes: [
+        {
+          default: true,
+          id: homeid,
+          name: "defaultHome",
+          previewDays: 7,
+        },
+      ],
       onboardingDone: false,
     });
     return true;

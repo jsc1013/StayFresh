@@ -137,6 +137,7 @@ export default function HomeScreen({ route, navigation }) {
       } else if (userData == undefined) {
         setShowOnboarding(true);
         await createUserProfile(auth.currentUser.email);
+        loadUserData();
       }
       setLoadingModalVisible(false);
     }

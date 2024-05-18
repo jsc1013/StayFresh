@@ -7,17 +7,26 @@ import {
   TouchableOpacity,
   ScrollView,
   Keyboard,
+  Text,
+  Alert,
+  Modal,
+  ActivityIndicator,
 } from "react-native";
 import Header from "../components/HeaderComponent";
 import { TextInput, Button } from "react-native-paper";
 import DropDownPicker from "react-native-dropdown-picker";
+import { BlurView } from "expo-blur";
 import { DateTimePickerAndroid } from "@react-native-community/datetimepicker";
 import Toast from "react-native-toast-message";
 import { myColors } from "../constants/Colors";
 import { useDebounce } from "use-debounce";
 import { useTranslation } from "react-i18next";
 import { getHomeStorages } from "../services/homeService";
-import { getAllProductsPeriod, addProduct } from "../services/productService";
+import {
+  getAllProductsPeriod,
+  addProduct,
+  deleteProduct,
+} from "../services/productService";
 
 export default function AddProductScreenScreen({ route, navigation }) {
   const { t } = useTranslation();
@@ -26,6 +35,7 @@ export default function AddProductScreenScreen({ route, navigation }) {
 
   const [allProductsPeriod, setAllProductsPeriod] = useState([]);
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
+  const [loadingModalVisible, setLoadingModalVisible] = useState(false);
 
   const days = 180;
   const fetchPeriod = new Date().getTime() - 1000 * 60 * 60 * 24 * days;
@@ -159,6 +169,16 @@ export default function AddProductScreenScreen({ route, navigation }) {
     [searchTextDebounce]
   );
 
+  // Shows the loading modal
+  function showLoadingModal() {
+    setLoadingModalVisible(true);
+  }
+
+  // Clears the loading modal
+  function closeLoadingModal() {
+    setLoadingModalVisible(false);
+  }
+
   function getProductById(id) {
     const productFound = allProductsPeriod.find((product) => product.id === id);
     setProductName(productFound.name);
@@ -220,8 +240,10 @@ export default function AddProductScreenScreen({ route, navigation }) {
       quantity: parseInt(productQuantity),
       storage: storageValue,
     };
-
-    addProduct(newDoc);
+    showLoadingModal();
+    let returnedId = await addProduct(newDoc);
+    newDoc.id = returnedId;
+    closeLoadingModal();
     showToast(
       "success",
       t("components.general.success", t("components.addProduct.added"))
@@ -273,8 +295,66 @@ export default function AddProductScreenScreen({ route, navigation }) {
     }
   }
 
+  const renderListItem = (props) => {
+    const { label } = props;
+    return (
+      <TouchableOpacity
+        onPress={() => {
+          getProductById(props.value);
+          setSearchedText("");
+          setOpenSearch(false);
+        }}
+        onLongPress={() => handleLongPress(props)}
+        style={{
+          padding: 10,
+          borderBottomWidth: 1,
+          borderBottomColor: "#ccc",
+        }}
+      >
+        <Text>{label}</Text>
+      </TouchableOpacity>
+    );
+  };
+
+  const handleLongPress = (item) => {
+    Alert.alert(
+      t("components.addProduct.deleteSuggestionHeader"),
+      t("components.addProduct.deleteSuggestionMessage"),
+      [
+        {
+          text: t("general.cancel"),
+          onPress: () => null,
+          style: "cancel",
+        },
+        {
+          text: t("general.yes"),
+          onPress: () => handleConfirmDeleteSuggestion(item.value),
+        },
+      ]
+    );
+  };
+
+  const handleConfirmDeleteSuggestion = async (id) => {
+    await deleteProduct(id);
+    let tempProducts = [...allProductsPeriod];
+    tempProducts = tempProducts.filter((item) => item.id != id);
+    setAllProductsPeriod(tempProducts);
+    setOpenSearch(false);
+    setSearchText("");
+  };
+
   return (
     <View style={styles.container}>
+      {/* LOADING MODAL */}
+      <Modal transparent={true} visible={loadingModalVisible}>
+        <BlurView
+          intensity={90}
+          tint="light"
+          style={styles.loadingModalBackground}
+        >
+          <ActivityIndicator size="large"></ActivityIndicator>
+        </BlurView>
+      </Modal>
       {!isKeyboardVisible && (
         <Header
           callBackFunction={() => {
@@ -310,6 +390,7 @@ export default function AddProductScreenScreen({ route, navigation }) {
           multiple={false}
           mode="SIMPLE"
           searchable={true}
+          renderListItem={renderListItem}
           placeholder={t("components.addProduct.searchText")}
           translation={{
             SEARCH_PLACEHOLDER: t("components.addProduct.search"),
@@ -319,12 +400,6 @@ export default function AddProductScreenScreen({ route, navigation }) {
           showArrowIcon={false}
           listMode="MODAL"
           modalAnimationType="fade"
-          onChangeValue={(id) => {
-            if (searchedText != "") {
-              getProductById(id);
-              setSearchedText("");
-            }
-          }}
           onChangeSearchText={(text) => {
             setSearchText(text);
           }}
@@ -479,5 +554,9 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     borderWidth: 0.5,
     borderRadius: 6,
+  },
+  loadingModalBackground: {
+    flex: 1,
+    justifyContent: "center",
   },
 });

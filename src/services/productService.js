@@ -8,6 +8,7 @@ import {
   updateDoc,
   where,
   writeBatch,
+  deleteDoc,
 } from "firebase/firestore";
 import { myColors } from "../constants/Colors";
 import i18next from "../services/i18next";
@@ -116,8 +117,8 @@ export async function getAllProductsPeriod(homeId, fetchPeriod) {
 
 export async function addProduct(doc) {
   try {
-    await addDoc(collection(firestoreDB, "products"), doc);
-    return true;
+    let docRef = await addDoc(collection(firestoreDB, "products"), doc);
+    return docRef.id;
   } catch (e) {
     console.log(e);
     return false;
@@ -174,6 +175,16 @@ export async function updateProductDate(productId, date) {
     updateDoc(doc(firestoreDB, "products", productId), {
       expirationDate: parseInt(date),
     });
+    return true;
+  } catch (e) {
+    console.log(e);
+    return false;
+  }
+}
+
+export async function deleteProduct(productId) {
+  try {
+    deleteDoc(doc(firestoreDB, "products", productId));
     return true;
   } catch (e) {
     console.log(e);

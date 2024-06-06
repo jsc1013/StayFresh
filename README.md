@@ -21,7 +21,7 @@ StayFresh is an innovative mobile application designed to reduce food waste by k
 
 1. Clone the repository:
     ```bash
-    git clone https://github.com/your-username/StayFresh.git
+    git clone https://github.com/jsc1013/StayFresh.git
     cd StayFresh
     ```
 2. Install dependencies:

@@ -35,3 +35,8 @@ StayFresh is an innovative mobile application designed to reduce food waste by k
     ```bash
     npm start
     ```
+
+## In app images
+![1](https://github.com/jsc1013/StayFresh/assets/118318415/1babd458-0a67-447a-9e03-ca76b9f0ea30)
+![13C](https://github.com/jsc1013/StayFresh/assets/118318415/2b09dd7c-372c-4956-82f2-8968494243a0)
+![17](https://github.com/jsc1013/StayFresh/assets/118318415/641c4c11-4ad5-486e-a285-b533a3707b72)
